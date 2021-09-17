@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hadoop2.x安装教程 | Wind</title><meta name="keywords" content="Hadoop安装"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Hadoop2.x安装前提# 必须有3台虚拟机，然后密钥也需要弄!!!# 如果没设置密钥，可以在master中生成密钥文件。# 如果你的主机名字不是叫做master，在弄配置文件的时候，只需要将你的主机名替换掉我的master就可以了。ssh-keygen -t rsa一直回车# 将密钥文件同步到所有节点ssh-copy-id masterssh-copy-id node1ssh-copy-id">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop2.x安装教程">
+<meta property="og:url" content="http://example.com/2021/09/17/Hadoop2-x%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="Hadoop2.x安装前提# 必须有3台虚拟机，然后密钥也需要弄!!!# 如果没设置密钥，可以在master中生成密钥文件。# 如果你的主机名字不是叫做master，在弄配置文件的时候，只需要将你的主机名替换掉我的master就可以了。ssh-keygen -t rsa一直回车# 将密钥文件同步到所有节点ssh-copy-id masterssh-copy-id node1ssh-copy-id">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/蓝天.jpg">
+<meta property="article:published_time" content="2021-09-17T08:58:28.000Z">
+<meta property="article:modified_time" content="2021-09-17T12:15:57.397Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="Hadoop安装">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/蓝天.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/09/17/Hadoop2-x%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hadoop2.x安装教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-09-17 20:15:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/蓝天.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hadoop2.x安装教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-09-17T08:58:28.000Z" title="发表于 2021-09-17 16:58:28">2021-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-09-17T12:15:57.397Z" title="更新于 2021-09-17 20:15:57">2021-09-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%BB%84%E4%BB%B6%E5%AD%A6%E4%B9%A0/">大数据组件学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hadoop2.x安装教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Hadoop2-x安装"><a href="#Hadoop2-x安装" class="headerlink" title="Hadoop2.x安装"></a>Hadoop2.x安装</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 必须有3台虚拟机，然后密钥也需要弄!!!</span></span><br><span class="line"><span class="comment"># 如果没设置密钥，可以在master中生成密钥文件。</span></span><br><span class="line"><span class="comment"># 如果你的主机名字不是叫做master，在弄配置文件的时候，只需要将你的主机名替换掉我的master就可以了。</span></span><br><span class="line"></span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line">一直回车</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将密钥文件同步到所有节点</span></span><br><span class="line">ssh-copy-id master</span><br><span class="line">ssh-copy-id node1</span><br><span class="line">ssh-copy-id node2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我的电脑因为之前弄过了，所以密钥已经有了。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="NO1-本地通过XFTP上传到Linux上"><a href="#NO1-本地通过XFTP上传到Linux上" class="headerlink" title="NO1.本地通过XFTP上传到Linux上"></a>NO1.本地通过XFTP上传到Linux上</h2><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917185804921.png" alt="image-20210917185804921"></p>
+<p>我这里安装的是Hadoop-2.7.6版本的。</p>
+<h2 id="NO2-解压到soft目录下面"><a href="#NO2-解压到soft目录下面" class="headerlink" title="NO2.解压到soft目录下面"></a>NO2.解压到soft目录下面</h2><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917185936742.png" alt="image-20210917185936742"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917190303756.png" alt="image-20210917190303756"></p>
+<h2 id="NO3-配置环境变量"><a href="#NO3-配置环境变量" class="headerlink" title="NO3.配置环境变量"></a>NO3.配置环境变量</h2><p>在master下。使用命令  vim /etc/profile</p>
+<p>增加hadoop环境变量，将bin和sbin都配置到PATH中</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917191204559.png" alt="image-20210917191204559"></p>
+<p>然后记得刷新一下。使用命令   source /etc/profile</p>
+<p>接着分发到将profile分发到两台从机上面去,同时也要刷新以下。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917191439519.png" alt="image-20210917191439519"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -r /etc/profile node1:/etc/profile</span><br><span class="line"></span><br><span class="line">scp -r /etc/profile node2:/etc/profile</span><br></pre></td></tr></table></figure>
+
+<h2 id="NO4-修改配置文件-操作均在master上执行"><a href="#NO4-修改配置文件-操作均在master上执行" class="headerlink" title="NO4.修改配置文件(操作均在master上执行)"></a>NO4.修改配置文件(操作均在master上执行)</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hadoop 配置文件在/usr/<span class="built_in">local</span>/soft/hadoop-2.7.6/etc/hadoop/</span><br><span class="line"></span><br><span class="line">使用命令  <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/soft/hadoop-2.7.6/etc/hadoop</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-修改slaves"><a href="#4-1-修改slaves" class="headerlink" title="4.1 修改slaves"></a>4.1 修改slaves</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim slaves</span><br><span class="line">增加node1,node2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917191935303.png" alt="image-20210917191935303"></p>
+<h3 id="4-2-修改Hadoop环境配置文件"><a href="#4-2-修改Hadoop环境配置文件" class="headerlink" title="4.2 修改Hadoop环境配置文件"></a>4.2 修改Hadoop环境配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim hadoop-env.sh</span><br><span class="line"><span class="comment"># 修改JAVA_HOME</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/soft/jdk1.8.0_171</span><br><span class="line"><span class="comment"># 路径就是自己jdk安装的路径，然后jdk版本填写自己的。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917192449991.png" alt="image-20210917192449991"></p>
+<h3 id="4-3-修改core-site-xml这是Hadoop的核心配置文件"><a href="#4-3-修改core-site-xml这是Hadoop的核心配置文件" class="headerlink" title="4.3 修改core-site.xml这是Hadoop的核心配置文件"></a>4.3 修改core-site.xml这是Hadoop的核心配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim core-site.xml</span><br><span class="line"><span class="comment"># 在configuration中间增加以下内容</span></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">&lt;value&gt;hdfs://master:9000&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">&lt;value&gt;/usr/<span class="built_in">local</span>/soft/hadoop-2.7.6/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;fs.trash.interval&lt;/name&gt;</span><br><span class="line">&lt;value&gt;1440&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917192835262.png" alt="image-20210917192835262"></p>
+<h3 id="4-4-修改hdfs-site-xml-这是hdfs配置文件"><a href="#4-4-修改hdfs-site-xml-这是hdfs配置文件" class="headerlink" title="4.4 修改hdfs-site.xml 这是hdfs配置文件"></a>4.4 修改hdfs-site.xml 这是hdfs配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim hdfs-site.xml</span><br><span class="line"><span class="comment"># 在configuration中间增加以下内容</span></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">&lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">&lt;value&gt;<span class="literal">false</span>&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917193335322.png" alt="image-20210917193335322"></p>
+<h3 id="4-5-修改yarn-site-xml-这是yarn的配置文件"><a href="#4-5-修改yarn-site-xml-这是yarn的配置文件" class="headerlink" title="4.5 修改yarn-site.xml 这是yarn的配置文件"></a>4.5 修改yarn-site.xml 这是yarn的配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim yarn-site.xml</span><br><span class="line"><span class="comment"># 在configuration中间增加以下内容</span></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">&lt;value&gt;master&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">&lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;</span><br><span class="line">&lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.log-aggregation.retain-seconds&lt;/name&gt;</span><br><span class="line">&lt;value&gt;604800&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;20480&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;yarn.scheduler.minimum-allocation-mb&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;2048&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;2.1&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt; </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917194010581.png" alt="image-20210917194010581"></p>
+<h3 id="4-6-修改mapred-site-xml-这是mapreduce的配置文件"><a href="#4-6-修改mapred-site-xml-这是mapreduce的配置文件" class="headerlink" title="4.6 修改mapred-site.xml 这是mapreduce的配置文件"></a>4.6 修改mapred-site.xml 这是mapreduce的配置文件</h3><p>在2.x版本中，会有一个mapred-site.xml.template这个文件，我们要给它重命名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重命名</span></span><br><span class="line">mv mapred-site.xml.template mapred-site.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917194118845.png" alt="image-20210917194118845"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim mapred-site.xml</span><br><span class="line"><span class="comment"># 在configuration中间增加以下内容</span></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">&lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;master:10020&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;master:19888&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917194339898.png" alt="image-20210917194339898"></p>
+<h2 id="NO5-将hadoop安装文件同步到子节点上"><a href="#NO5-将hadoop安装文件同步到子节点上" class="headerlink" title="NO5.将hadoop安装文件同步到子节点上"></a>NO5.将hadoop安装文件同步到子节点上</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -r /usr/<span class="built_in">local</span>/soft/hadoop-2.7.6/ node1:/usr/<span class="built_in">local</span>/soft/</span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/soft/hadoop-2.7.6/ node2:/usr/<span class="built_in">local</span>/soft/</span><br></pre></td></tr></table></figure>
+
+<p>同步之后就能在子节点中找到相应文件了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917195046675.png" alt="image-20210917195046675"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917195124002.png" alt="image-20210917195124002"></p>
+<h2 id="NO6-格式化namenode"><a href="#NO6-格式化namenode" class="headerlink" title="NO6.格式化namenode"></a>NO6.格式化namenode</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hdfs namenode -format </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917195354737.png" alt="image-20210917195354737"></p>
+<h2 id="NO7-启动hadoop并且通过jps查看"><a href="#NO7-启动hadoop并且通过jps查看" class="headerlink" title="NO7.启动hadoop并且通过jps查看"></a>NO7.启动hadoop并且通过jps查看</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动hadoop，在hadoop的sbin目录下启动</span></span><br><span class="line">start-all.sh</span><br><span class="line"><span class="comment"># jps主机和从机都查看</span></span><br><span class="line">jps</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917200000230.png" alt="image-20210917200000230"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917200218711.png" alt="image-20210917200218711"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917200247802.png" alt="image-20210917200247802"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917200313588.png" alt="image-20210917200313588"></p>
+<h2 id="NO7-访问hdfs页面验证是否安装成功"><a href="#NO7-访问hdfs页面验证是否安装成功" class="headerlink" title="NO7.访问hdfs页面验证是否安装成功"></a>NO7.访问hdfs页面验证是否安装成功</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在本地浏览器中输入</span></span><br><span class="line">http://192.168.30.66:50070</span><br><span class="line"><span class="comment"># 192.168.30.66是我自己的虚拟机的IP地址，要是修改只需要改成你们自己的就可以！！！</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917200713906.png" alt="image-20210917200713906"></p>
+<p>要是能出现这样的页面就是说明成功了。</p>
+<p>至此安装全部结束！！！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关闭集群</span></span><br><span class="line">stop-all.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20210917201546951.png" alt="image-20210917201546951"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hadoop%E5%AE%89%E8%A3%85/">Hadoop安装</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/蓝天.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/09/13/redis%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/二次元1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">redis学习小结</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hadoop2-x%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">Hadoop2.x安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%8F%90"><span class="toc-number">1.1.</span> <span class="toc-text">前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO1-%E6%9C%AC%E5%9C%B0%E9%80%9A%E8%BF%87XFTP%E4%B8%8A%E4%BC%A0%E5%88%B0Linux%E4%B8%8A"><span class="toc-number">1.2.</span> <span class="toc-text">NO1.本地通过XFTP上传到Linux上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO2-%E8%A7%A3%E5%8E%8B%E5%88%B0soft%E7%9B%AE%E5%BD%95%E4%B8%8B%E9%9D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">NO2.解压到soft目录下面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO3-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.4.</span> <span class="toc-text">NO3.配置环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO4-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-%E6%93%8D%E4%BD%9C%E5%9D%87%E5%9C%A8master%E4%B8%8A%E6%89%A7%E8%A1%8C"><span class="toc-number">1.5.</span> <span class="toc-text">NO4.修改配置文件(操作均在master上执行)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BF%AE%E6%94%B9slaves"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 修改slaves</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BF%AE%E6%94%B9Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 修改Hadoop环境配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BF%AE%E6%94%B9core-site-xml%E8%BF%99%E6%98%AFHadoop%E7%9A%84%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.3.</span> <span class="toc-text">4.3 修改core-site.xml这是Hadoop的核心配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BF%AE%E6%94%B9hdfs-site-xml-%E8%BF%99%E6%98%AFhdfs%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.4.</span> <span class="toc-text">4.4 修改hdfs-site.xml 这是hdfs配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E4%BF%AE%E6%94%B9yarn-site-xml-%E8%BF%99%E6%98%AFyarn%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.5.</span> <span class="toc-text">4.5 修改yarn-site.xml 这是yarn的配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E4%BF%AE%E6%94%B9mapred-site-xml-%E8%BF%99%E6%98%AFmapreduce%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.6.</span> <span class="toc-text">4.6 修改mapred-site.xml 这是mapreduce的配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO5-%E5%B0%86hadoop%E5%AE%89%E8%A3%85%E6%96%87%E4%BB%B6%E5%90%8C%E6%AD%A5%E5%88%B0%E5%AD%90%E8%8A%82%E7%82%B9%E4%B8%8A"><span class="toc-number">1.6.</span> <span class="toc-text">NO5.将hadoop安装文件同步到子节点上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO6-%E6%A0%BC%E5%BC%8F%E5%8C%96namenode"><span class="toc-number">1.7.</span> <span class="toc-text">NO6.格式化namenode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO7-%E5%90%AF%E5%8A%A8hadoop%E5%B9%B6%E4%B8%94%E9%80%9A%E8%BF%87jps%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.8.</span> <span class="toc-text">NO7.启动hadoop并且通过jps查看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NO7-%E8%AE%BF%E9%97%AEhdfs%E9%A1%B5%E9%9D%A2%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="toc-number">1.9.</span> <span class="toc-text">NO7.访问hdfs页面验证是否安装成功</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/蓝天.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="6952548653" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
