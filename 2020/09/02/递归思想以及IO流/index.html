@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>递归思想以及IO流 | Wind</title><meta name="keywords" content="Java"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="递归思想以及IO流递归什么是递归 方法定义中调用方法本身的现象 注意  递归需要有出口，否则就是死递归 次数不能太多，否则就内存溢出 构造方法不能递归使用  例如:求一个斐波那契数列     public static void main(String[] args) &amp;#123;        &#x2F;&#x2F;1,1,2,3,5,8,13,21        &#x2F;&#x2F;第三个开始，后面的都是前面两个之和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="递归思想以及IO流">
+<meta property="og:url" content="http://example.com/2020/09/02/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3%E4%BB%A5%E5%8F%8AIO%E6%B5%81/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="递归思想以及IO流递归什么是递归 方法定义中调用方法本身的现象 注意  递归需要有出口，否则就是死递归 次数不能太多，否则就内存溢出 构造方法不能递归使用  例如:求一个斐波那契数列     public static void main(String[] args) &amp;#123;        &#x2F;&#x2F;1,1,2,3,5,8,13,21        &#x2F;&#x2F;第三个开始，后面的都是前面两个之和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%A3%9E%E6%9C%BA.jpg">
+<meta property="article:published_time" content="2020-09-02T12:03:17.000Z">
+<meta property="article:modified_time" content="2021-09-24T05:58:35.377Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%A3%9E%E6%9C%BA.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/09/02/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3%E4%BB%A5%E5%8F%8AIO%E6%B5%81/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '递归思想以及IO流',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-09-24 13:58:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%A3%9E%E6%9C%BA.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">递归思想以及IO流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-02T12:03:17.000Z" title="发表于 2020-09-02 20:03:17">2020-09-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-09-24T05:58:35.377Z" title="更新于 2021-09-24 13:58:35">2021-09-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="递归思想以及IO流"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="递归思想以及IO流"><a href="#递归思想以及IO流" class="headerlink" title="递归思想以及IO流"></a>递归思想以及IO流</h1><h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p><strong>什么是递归</strong></p>
+<p>方法定义中调用方法本身的现象</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>递归需要有出口，否则就是死递归</li>
+<li>次数不能太多，否则就内存溢出</li>
+<li>构造方法不能递归使用</li>
+</ul>
+<p>例如:求一个斐波那契数列</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1,1,2,3,5,8,13,21</span></span><br><span class="line">        <span class="comment">//第三个开始，后面的都是前面两个之和     求第二十个数</span></span><br><span class="line">    <span class="keyword">int</span> []arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20</span>];</span><br><span class="line">    arr[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    arr[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">        arr[i] = arr[i-<span class="number">2</span>]+arr[i-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(arr[arr.length-<span class="number">1</span>]);</span><br><span class="line">    System.out.println(<span class="string">&quot;***************&quot;</span>);</span><br><span class="line">    System.out.println(recursion(<span class="number">20</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">recursion</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(i==<span class="number">1</span> || i==<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        sum += recursion(i-<span class="number">1</span>) + recursion(i-<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h2><p>用来解决设备之间数据传输的问题<br>简单一句话：<br><strong>如果用电脑的笔记本打开能看懂的东西，就用字符流，<br>笔记本打开看不懂，就用字节流</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904192052.png"></p>
+<h3 id="IO流的分类"><a href="#IO流的分类" class="headerlink" title="IO流的分类"></a>IO流的分类</h3><p><strong>流向：</strong><br>输入流 读取数据<br>输出流 写出数据<br><strong>数据类型：</strong><br>字节流：<br>字节输入流 读取数据 InputStream<br>字节输出流 写入数据 OutputStream<br>字符流：<br>字符输入流 读取数据 Reader<br>字符输出流 写出数据 Writer<br><strong>写出</strong><br>往文件中写出一个数据<br>我们现在尝试着往文件中写入一个数据，使用记事本能看懂的，最好用字符流，但我们这里用的是字节流</p>
+<h4 id="字节输出流的操作步骤："><a href="#字节输出流的操作步骤：" class="headerlink" title="字节输出流的操作步骤："></a>字节输出流的操作步骤：</h4><p>1、创建字节输出流对象<br>2、写入数据<br>3、释放资源</p>
+<p>我们是通过程序写到文本文件，所以这里用的是OutputStream</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//创建字节输出流对象</span></span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;a.txt&quot;</span>);<span class="comment">//文件如果不存在，自动创建</span></span><br><span class="line">        FileOutputStream fileOutputStream = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">        System.out.println(fileOutputStream);</span><br><span class="line">    </span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        JVM创建字节输出流对象的时候，做了些什么</span></span><br><span class="line"><span class="comment">        1、调用系统功能创建文件</span></span><br><span class="line"><span class="comment">        2、创建fileOutputStream对象</span></span><br><span class="line"><span class="comment">        3、将fileOutputStream对象指向文件</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    </span><br><span class="line">        fileOutputStream.write(<span class="string">&quot;大数据&quot;</span>.getBytes());</span><br><span class="line">    </span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        为什么需要close文件</span></span><br><span class="line"><span class="comment">        1、让流对象变成垃圾，这样垃圾回收器就可以回收它了</span></span><br><span class="line"><span class="comment">        2、通知系统去释放跟该文件相关的资源</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        fileOutputStream.close();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="JVM创建字节输出流的时候，都做了些什么"><a href="#JVM创建字节输出流的时候，都做了些什么" class="headerlink" title="JVM创建字节输出流的时候，都做了些什么"></a>JVM创建字节输出流的时候，都做了些什么</h4><p>调用系统功能创建文件<br>创建fileOutputStream对象<br>将fileOutputStream对象指向该文件<br>为什么需要close文件<br>让流对象变成垃圾，这样垃圾回收器就可以回收它了<br>通知系统去释放跟该文件相关的资源<br><strong>三种使用字节输出流往文件中写入数据的方式</strong><br>public void write(int b)<br>public void write(byte[] b)<br>public void write(byte[] b,int off,int len)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        使用字节输出流写数据的方式</span></span><br><span class="line"><span class="comment">        1、创建字节输出流对象</span></span><br><span class="line"><span class="comment">        2、使用write方法写入数据</span></span><br><span class="line"><span class="comment">        3、释放资源</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        FileOutputStream fileOutputStream = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;a.txt&quot;</span>);</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//public void write(int b)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        fileOutputStream.write(97); //a.txt文件中的内容是a，可以看到这种方式，存入的是97的ASCII码</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public void write(byte[] b)</span></span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[]&#123;<span class="number">104</span>,<span class="number">105</span>,<span class="number">106</span>&#125;;<span class="comment">//a.txt中的内容是hij，存入的也是底层的ASCII码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        fileOutputStream.write(b);</span></span><br><span class="line"> 		<span class="comment">//public void write(byte[] b,int off,int len)</span></span><br><span class="line">    	fileOutputStream.write(b,<span class="number">0</span>,<span class="number">2</span>);<span class="comment">//偏移量，也是ASCII码</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h4><h5 id="字节输入流的操作步骤"><a href="#字节输入流的操作步骤" class="headerlink" title="字节输入流的操作步骤"></a>字节输入流的操作步骤</h5><ul>
+<li>创建字节输入对象</li>
+<li>调用read方法读取数据，并把数据显示在控制台</li>
+<li>释放资源</li>
+</ul>
+<h5 id="两种字节输入流读取数据的方式"><a href="#两种字节输入流读取数据的方式" class="headerlink" title="两种字节输入流读取数据的方式"></a>两种字节输入流读取数据的方式</h5><ul>
+<li>public int read()</li>
+<li>public int read(byte[] b)</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904192438.png"></p>
+<p><strong>缓冲区类（高效类）</strong><br>我们可以看到，在使用字节输入输出流的时候，复制照片或者视频的时候，速度非常慢，这里我们使用字节缓冲流</p>
+<p><strong>字节缓冲输出流</strong><br>BufferedOutputStream<br><strong>字节缓冲输入流</strong><br>BufferedInputStream<br><strong>字节缓冲输出流</strong><br>BufferedOutputStream中要传入一个OutputStream的具体的子类实现对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        BufferedOutputStream bufferedOutputStream = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;a.txt&quot;</span>));</span><br><span class="line">    </span><br><span class="line">        bufferedOutputStream.write(<span class="string">&quot;大数据yyds&quot;</span>.getBytes());</span><br><span class="line">    </span><br><span class="line">        bufferedOutputStream.close();</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//字节缓冲输入流</span></span><br><span class="line"><span class="comment">//输入到控制台：</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        BufferedInputStream bufferedInputStream = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;a.txt&quot;</span>));</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ((len = bufferedInputStream.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">            System.out.println(<span class="keyword">new</span> String(bytes,<span class="number">0</span>,len));</span><br><span class="line">    </span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        bufferedInputStream.close();</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;<span class="comment">//大数据yyds</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%A3%9E%E6%9C%BA.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/02/%E5%AD%97%E7%AC%A6%E6%B5%81%E5%92%8C%E5%BA%8F%E5%88%97%E5%8C%96/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%94%AF%E7%BE%8E2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">字符流和序列化</div></div></a></div><div class="next-post pull-right"><a href="/2020/09/02/Treeset%E4%BB%A5%E5%8F%8AMap/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%94%AF%E7%BE%8E%E5%8A%A8%E6%BC%AB.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Treeset以及Map</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/09/02/Java中一些常用的类以及API帮助文档/" title="Java中一些常用的类以及API帮助文档"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E8%A8%80%E5%8F%B6%E4%B9%8B%E5%BA%AD.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java中一些常用的类以及API帮助文档</div></div></a></div><div><a href="/2020/09/02/Java中的代码块以及方法的重写/" title="Java中的代码块以及方法的重写"><img class="cover" src="https://i.loli.net/2021/09/02/n8e9XIvjBfwrpSd.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java中的代码块以及方法的重写</div></div></a></div><div><a href="/2020/09/02/Java中键盘录入以及循环结构/" title="Java中键盘录入以及循环结构"><img class="cover" src="https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java中键盘录入以及循环结构</div></div></a></div><div><a href="/2020/09/02/Java基础小知识/" title="Java基础小知识"><img class="cover" src="https://i.loli.net/2021/09/02/9NjuWHvsPkzODeK.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java基础小知识</div></div></a></div><div><a href="/2020/09/02/Java多线程/" title="Java多线程"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%BB%84%E6%98%8F.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java多线程</div></div></a></div><div><a href="/2020/09/02/Java打印1000以内的完数/" title="Java打印1000以内的完数"><img class="cover" src="https://i.loli.net/2021/09/02/oCcnJKiIhf5xElZ.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="title">Java打印1000以内的完数</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3%E4%BB%A5%E5%8F%8AIO%E6%B5%81"><span class="toc-number">1.</span> <span class="toc-text">递归思想以及IO流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92"><span class="toc-number">1.1.</span> <span class="toc-text">递归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO%E6%B5%81"><span class="toc-number">1.2.</span> <span class="toc-text">IO流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IO%E6%B5%81%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.1.</span> <span class="toc-text">IO流的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E8%BE%93%E5%87%BA%E6%B5%81%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">字节输出流的操作步骤：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E5%88%9B%E5%BB%BA%E5%AD%97%E8%8A%82%E8%BE%93%E5%87%BA%E6%B5%81%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E9%83%BD%E5%81%9A%E4%BA%86%E4%BA%9B%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">JVM创建字节输出流的时候，都做了些什么</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E5%85%A5"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">写入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E8%BE%93%E5%85%A5%E6%B5%81%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.2.1.3.1.</span> <span class="toc-text">字节输入流的操作步骤</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AD%97%E8%8A%82%E8%BE%93%E5%85%A5%E6%B5%81%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.1.3.2.</span> <span class="toc-text">两种字节输入流读取数据的方式</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E9%A3%9E%E6%9C%BA.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="6955070991" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
