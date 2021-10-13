@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HBase学习小结 | Wind</title><meta name="keywords" content="大数据"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HBase定义HBase是一种分布式，可扩展，支持海量数据存储的NoSQL数据库。 HBase数据模型逻辑上，HBase的数据模型同关系型数据库很类似，数据存储在一张表中，有行有列。但从HBase的底层物理存储结构(k-v)来看，HBase更像是一个multi-dimensional map 逻辑结构 Row Key中是字典升序排列。 Region是一张表中横向的切片。如上图，有3个Region。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase学习小结">
+<meta property="og:url" content="http://example.com/2021/10/09/HBase%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="HBase定义HBase是一种分布式，可扩展，支持海量数据存储的NoSQL数据库。 HBase数据模型逻辑上，HBase的数据模型同关系型数据库很类似，数据存储在一张表中，有行有列。但从HBase的底层物理存储结构(k-v)来看，HBase更像是一个multi-dimensional map 逻辑结构 Row Key中是字典升序排列。 Region是一张表中横向的切片。如上图，有3个Region。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg">
+<meta property="article:published_time" content="2021-10-09T10:46:20.000Z">
+<meta property="article:modified_time" content="2021-10-13T15:33:54.407Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/10/09/HBase%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HBase学习小结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-10-13 23:33:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">HBase学习小结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-09T10:46:20.000Z" title="发表于 2021-10-09 18:46:20">2021-10-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-13T15:33:54.407Z" title="更新于 2021-10-13 23:33:54">2021-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0/">大数据学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HBase学习小结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="HBase"><a href="#HBase" class="headerlink" title="HBase"></a>HBase</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>HBase是一种分布式，可扩展，支持海量数据存储的NoSQL数据库。</p>
+<h2 id="HBase数据模型"><a href="#HBase数据模型" class="headerlink" title="HBase数据模型"></a>HBase数据模型</h2><p>逻辑上，HBase的数据模型同关系型数据库很类似，数据存储在一张表中，有行有列。但从HBase的底层物理存储结构(k-v)来看，HBase更像是一个<font color="red">multi-dimensional map</font></p>
+<h3 id="逻辑结构"><a href="#逻辑结构" class="headerlink" title="逻辑结构"></a>逻辑结构</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211010202851346.png" alt="image-20211010202851346"></p>
+<p>Row Key中是字典升序排列。</p>
+<p>Region是一张表中横向的切片。如上图，有3个Region。</p>
+<p>store是存储的，将来数据都会放在HDFS上。</p>
+<p><font color="red">另外值得注意的是，HBase的元数据放在zookeeper中，Hive的元数据放在MySQL中。</font></p>
+<h3 id="物理结构"><a href="#物理结构" class="headerlink" title="物理结构"></a>物理结构</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211010205230072.png" alt="image-20211010205230072"></p>
+<h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p><strong>1）Name Space</strong></p>
+<p>命名空间，类似于关系型数据库的 DatabBase 概念，每个命名空间下有多个表。HBase</p>
+<p>有两个自带的命名空间，分别是 hbase 和 default，hbase 中存放的是 HBase 内置的表，</p>
+<p>default 表是用户默认使用的命名空间。</p>
+<p><strong>2）Region</strong></p>
+<p>类似于关系型数据库的表概念。不同的是，HBase 定义表时只需要声明列族即可，不需</p>
+<p>要声明具体的列。这意味着，往 HBase 写入数据时，<font color="red">字段可以动态、按需指定</font>。因此，和关</p>
+<p>系型数据库相比，HBase 能够轻松应对字段变更的场景。</p>
+<p><strong>3）Row</strong></p>
+<p>HBase 表中的每行数据都由一个 <strong>RowKey</strong> 和多个 <strong>Column</strong>（列）组成，数据是按照 RowKey</p>
+<p>的<font color="red">字典顺序存储</font>的，并且查询数据时只能根据 RowKey 进行检索，所以 RowKey 的设计十分重</p>
+<p>要。</p>
+<p><strong>4）Column</strong></p>
+<p>HBase 中的每个列都由 Column Family(列族)和 Column Qualifier（列限定符）进行限</p>
+<p>定，例如 info：name，info：age。建表时，只需指明列族，而列限定符无需预先定义。</p>
+<p><strong>5）Time Stamp</strong></p>
+<p>用于标识数据的不同版本（version），每条数据写入时，如果不指定时间戳，系统会</p>
+<p>自动为其加上该字段，其值为写入 HBase 的时间。</p>
+<p><strong>6）Cell</strong></p>
+<p>由{rowkey, column Family：column Qualifier, time Stamp} 唯一确定的单元。cell 中的数</p>
+<p>据是没有类型的，全部是字节码形式存贮。</p>
+<h2 id="HBase基本架构"><a href="#HBase基本架构" class="headerlink" title="HBase基本架构"></a>HBase基本架构</h2><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211010220551524.png" alt="image-20211010220551524"></p>
+<p><strong>架构角色：</strong> </p>
+<p><strong>1）Region Server</strong> </p>
+<p>Region Server 为 Region 的管理者，其实现类为 HRegionServer，主要作用如下:</p>
+<p>对于数据的操作：get, put, delete；</p>
+<p>对于 Region 的操作：splitRegion、compactRegion。 </p>
+<p><strong>2）Master</strong> </p>
+<p>Master 是所有 Region Server 的管理者，其实现类为 HMaster，主要作用如下：</p>
+<p>对于表的操作：create, delete, alter</p>
+<p>对于 RegionServer的操作：分配 regions到每个RegionServer，监控每个 RegionServer</p>
+<p>的状态，负载均衡和故障转移。</p>
+<p><strong>3）Zookeeper</strong> </p>
+<p>HBase 通过 Zookeeper 来做 Master 的高可用、RegionServer 的监控、元数据的入口以及</p>
+<p>集群配置的维护等工作。</p>
+<p><strong>4）HDFS</strong> </p>
+<p>HDFS 为 HBase 提供最终的底层数据存储服务，同时为 HBase 提供高可用的支持。</p>
+<h2 id="HBase-Shell操作"><a href="#HBase-Shell操作" class="headerlink" title="HBase Shell操作"></a>HBase Shell操作</h2><p><strong>进入 HBase 客户端命令行</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hbase shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011192202257.png" alt="image-20211011192202257"></p>
+<p><strong>查看当前数据库中有哪些表</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">list</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011193250375.png" alt="image-20211011193250375"></p>
+<p><strong>创建表</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;列簇名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>查看表信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">describe <span class="string">&#x27;表名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011194338375.png" alt="image-20211011194338375"></p>
+<p>如上图所示，能看到很多信息。比如列簇名字，布隆过滤器，存放版本，过期时间等等。</p>
+<p><strong>变更表信息</strong></p>
+<p>将 info 列族中的数据存放 3 个版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">alter <span class="string">&#x27;表名&#x27;</span>，&#123;NAME=&gt;<span class="string">&#x27;info&#x27;</span>,VERSIONS=&gt;3&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011194624200.png" alt="image-20211011194624200"></p>
+<p><strong>删除表</strong></p>
+<p><strong>首先需要先让该表为 disable 状态：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">disable</span> <span class="string">&#x27;表名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>然后才能 drop 这个表：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drop <span class="string">&#x27;表名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>提示：如果直接 drop 表，会报错：ERROR: Table student is enabled. Disable it first.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011194844382.png" alt="image-20211011194844382"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011194735489.png" alt="image-20211011194735489"></p>
+<p>可以看到表已经删除了。</p>
+<p><strong>插入数据到表中put</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;rowkey&#x27;</span>,<span class="string">&#x27;列(注意，写法是 列簇:列名)&#x27;</span>,<span class="string">&#x27;value&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011201354228.png" alt="image-20211011201354228"></p>
+<p><strong>查询数据</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scan <span class="string">&#x27;表名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011203202274.png" alt="image-20211011203202274"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;rowkey&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011203605658.png" alt="image-20211011203605658"></p>
+<p><strong>修改数据</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;rowkey&#x27;</span>,<span class="string">&#x27;列簇:你要修改的列明列名&#x27;</span>,<span class="string">&#x27;你要修改的数值&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>删除数据</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">delete <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;rowkey&#x27;</span>,<span class="string">&#x27;列名&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211011205634488.png" alt="image-20211011205634488"></p>
+<h2 id="HBase进阶"><a href="#HBase进阶" class="headerlink" title="HBase进阶"></a>HBase进阶</h2><h3 id="HBase详细架构图"><a href="#HBase详细架构图" class="headerlink" title="HBase详细架构图"></a>HBase详细架构图</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211012201400499.png" alt="image-20211012201400499"></p>
+<p><strong>StoreFile</strong> </p>
+<p>保存实际数据的物理文件，StoreFile 以 HFile 的形式存储在 HDFS 上。每个 Store 会有一个或多个 StoreFile（HFile），数据在每个 StoreFile 中都是有序的。</p>
+<p><strong>MemStore</strong> </p>
+<p>写缓存，由于 HFile 中的数据要求是有序的，所以数据是先存储在 MemStore 中，排好序后，等到达刷写时机才会刷写到 HFile，每次刷写都会形成一个新的 HFile。 </p>
+<p><strong>WAL</strong> </p>
+<p>由于数据要经 MemStore 排序后才能刷写到 HFile，但把数据保存在内存中会有很高的概率导致数据丢失，为了解决这个问题，数据会先写在一个叫做 Write-Ahead logfile 的文件中，然后再写入 MemStore 中。所以在系统出现故障的时候，数据可以通过这个日志文件(HLog)重建。</p>
+<h3 id="HBase写流程"><a href="#HBase写流程" class="headerlink" title="HBase写流程"></a>HBase写流程</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211012204131202.png" alt="image-20211012204131202"></p>
+<p><strong>写流程：</strong></p>
+<p>1）Client 先访问 zookeeper，获取 hbase:meta 表位于哪个 Region Server。 </p>
+<p>2）访问对应的 Region Server，获取 hbase:meta 表，根据读请求的 namespace:table/rowkey，</p>
+<p>查询出目标数据位于哪个 Region Server 中的哪个 Region 中。并将该 table 的 region 信息以</p>
+<p>及 meta 表的位置信息缓存在客户端的 meta cache，方便下次访问。</p>
+<p>3）与目标 Region Server 进行通讯；</p>
+<p>4）将数据顺序写入（追加）到 WAL； </p>
+<p>5）将数据写入对应的 MemStore，数据会在 MemStore 进行排序； </p>
+<p>6）向客户端发送 ack； </p>
+<p>7）等达到 MemStore 的刷写时机后，将数据刷写到 HFile。</p>
+<h3 id="HBase读流程"><a href="#HBase读流程" class="headerlink" title="HBase读流程"></a>HBase读流程</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211012204229181.png" alt="image-20211012204229181"></p>
+<p><strong>读流程</strong></p>
+<p>1）Client 先访问 zookeeper，获取 hbase:meta 表位于哪个 Region Server。 </p>
+<p>2）访问对应的 Region Server，获取 hbase:meta 表，根据读请求的 namespace:table/rowkey，</p>
+<p>查询出目标数据位于哪个 Region Server 中的哪个 Region 中。并将该 table 的 region 信息以</p>
+<p>及 meta 表的位置信息缓存在客户端的 meta cache，方便下次访问。</p>
+<p>3）与目标 Region Server 进行通讯；</p>
+<p>4）分别在 Block Cache（读缓存），MemStore 和 Store File（HFile）中查询目标数据，并将</p>
+<p>查到的所有数据进行合并。此处所有数据是指同一条数据的不同版本（time stamp）或者不</p>
+<p>同的类型（Put/Delete）。</p>
+<p>5） 将从文件中查询到的数据块（Block，HFile 数据存储单元，默认大小为 64KB）缓存到</p>
+<p>Block Cache(读缓存)。 </p>
+<p>6）将合并后的最终结果返回给客户端。</p>
+<p><font color="red">注意：HBase框架是一个读比写慢的框架。</font></p>
+<h3 id="MemStore-Flush"><a href="#MemStore-Flush" class="headerlink" title="MemStore Flush"></a>MemStore Flush</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211012212143889.png" alt="image-20211012212143889"></p>
+<p><strong>MemStore</strong> <strong>刷写时机：</strong></p>
+<p>1.当某个 memstroe 的大小达到了 <strong>hbase.hregion.memstore.flush.size</strong>（默认值 <strong>128M</strong>）， 其所在 region 的所有 memstore 都会刷写。 当 memstore 的大小达到了<strong>hbase.hregion.memstore.flush.size</strong>（默认值 <strong>128M</strong>）<strong>hbase.hregion.memstore.block.multiplier</strong>（默认值 <strong>4</strong>）时，会阻止继续往该 memstore 写数据。</p>
+<p>2.当 region server 中 memstore 的总大小达到</p>
+<p><strong>java_heapsize</strong></p>
+<p><strong>hbase.regionserver.global.memstore.size</strong>（默认值<strong>0.4</strong>）</p>
+<p><strong>hbase.regionserver.global.memstore.size.lower.limit</strong>（默认值 <strong>0.95</strong>），</p>
+<p>region 会按照其所有 memstore 的大小顺序（由大到小）依次进行刷写。直到 region server中所有 memstore 的总大小减小到上述值以下。 当 region server 中 memstore 的总大小达到</p>
+<p><strong>java_heapsizehbase.regionserver.global.memstore.size</strong>（默认值 <strong>0.4</strong>）时，会阻止继续往所有的 memstore 写数据。</p>
+<p>3.到达自动刷写的时间，也会触发 memstore flush。自动刷新的时间间隔由该属性进行</p>
+<p>配置 <strong>hbase.regionserver.optionalcacheflushinterval</strong>（默认 <strong>1</strong> <strong>小时）</strong>。</p>
+<p>4.当 WAL 文件的数量超过 <strong>hbase.regionserver.max.logs</strong>，region 会按照时间顺序依次进行刷写，直到 WAL 文件数量减小到 <strong>hbase.regionserver.max.log</strong> 以下（该属性名已经废弃，现无需手动设置，最大值为 32）。</p>
+<h3 id="StoreFile-Compaction"><a href="#StoreFile-Compaction" class="headerlink" title="StoreFile Compaction"></a>StoreFile Compaction</h3><p>由于memstore每次刷写都会生成一个新的HFile，且同一个字段的不同版本（timestamp)和不同类型（Put/Delete）有可能会分布在不同的 HFile 中，因此查询时需要遍历所有的 HFile。为了减少 HFile 的个数，以及清理掉过期和删除的数据，会进行 StoreFile Compaction。</p>
+<p>Compaction 分为两种，分别是 <font color="red">Minor Compaction</font> 和<font color="red">Major Compaction</font>。Minor Compaction会将临近的若干个较小的 HFile 合并成一个较大的 HFile，但<font color="red">不会清理过期和删除的数据</font>。Major Compaction 会将一个 Store 下的所有的 HFile 合并成一个大 HFile，并且<font color="red">会清理掉过期和删除的数据。</font></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013154246967.png" alt="image-20211013154246967"></p>
+<h3 id="Region-Split"><a href="#Region-Split" class="headerlink" title="Region Split"></a>Region Split</h3><p>​        默认情况下，每个 Table 起初只有一个 Region，随着数据的不断写入，Region 会自动进行拆分。刚拆分时，两个子 Region 都位于当前的 Region Server，但处于负载均衡的考虑，HMaster 有可能会将某个 Region 转移给其他的 Region Server。</p>
+<p>Region Split 时机：</p>
+<p>​    1.当1个region中的某个Store下所有StoreFile的总大小超过<font color="red">hbase.hregion.max.filesize</font>， </p>
+<p>该 Region 就会进行拆分（0.94 版本之前）。</p>
+<ol start="2">
+<li>当 1 个 region 中 的 某 个 Store 下所有 StoreFile 的 总 大 小 超 过 Min(R^2 * </li>
+</ol>
+<p>“hbase.hregion.memstore.flush.size”,hbase.hregion.max.filesize”)，该 Region 就会进行拆分，其</p>
+<p>中 R 为当前 Region Server 中属于该 Table 的个数（0.94 版本之后）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013154349937.png" alt="image-20211013154349937"></p>
+<h2 id="HBase-JavaAPI操作"><a href="#HBase-JavaAPI操作" class="headerlink" title="HBase JavaAPI操作"></a>HBase JavaAPI操作</h2><p><strong>Hbase API类和数据模型之间的对应关系</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013200957608.png" alt="image-20211013200957608"></p>
+<h3 id="例一：创建test-api表"><a href="#例一：创建test-api表" class="headerlink" title="例一：创建test_api表"></a>例一：创建test_api表</h3><p><strong>代码如下所示</strong></p>
+<h4 id="创建配置，指定zookeeper集群地址"><a href="#创建配置，指定zookeeper集群地址" class="headerlink" title="创建配置，指定zookeeper集群地址"></a>创建配置，指定zookeeper集群地址</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Configuration conf = HBaseConfiguration.create();</span><br><span class="line">conf.set(<span class="string">&quot;hbase.zookeeper.quorum&quot;</span>,<span class="string">&quot;master,node1,node2&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建连接"><a href="#创建连接" class="headerlink" title="创建连接"></a>创建连接</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Connection connection = ConnectionFactory.createConnection(conf);</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建Admin对象"><a href="#创建Admin对象" class="headerlink" title="创建Admin对象"></a>创建Admin对象</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Admin admin = connection.getAdmin();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HTableDescriptor hTableDescriptor = <span class="keyword">new</span> HTableDescriptor(TableName.valueOf(<span class="string">&quot;test_api&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建列簇-我这里取名叫做cf1"><a href="#创建列簇-我这里取名叫做cf1" class="headerlink" title="创建列簇,我这里取名叫做cf1"></a>创建列簇,我这里取名叫做cf1</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HColumnDescriptor cf1 = <span class="keyword">new</span> HColumnDescriptor(<span class="string">&quot;cf1&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="对列簇进行配置-可选操作"><a href="#对列簇进行配置-可选操作" class="headerlink" title="对列簇进行配置(可选操作)"></a>对列簇进行配置(可选操作)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">cf1.setTimeToLive(<span class="number">100</span>); <span class="comment">//设置过期时间</span></span><br><span class="line">cf1.setMaxVersions(<span class="number">3</span>); <span class="comment">//设置版本</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="增加列簇"><a href="#增加列簇" class="headerlink" title="增加列簇"></a>增加列簇</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">hTableDescriptor.addFamily(cf1);</span><br><span class="line">admin.createTable(hTableDescriptor);</span><br></pre></td></tr></table></figure>
+
+<h4 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">connection.close();</span><br></pre></td></tr></table></figure>
+
+<h4 id="总代码如下所示"><a href="#总代码如下所示" class="headerlink" title="总代码如下所示"></a>总代码如下所示</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.HBaseConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.HColumnDescriptor;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.HTableDescriptor;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.TableName;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Admin;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Connection;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo1Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//创建配置，指定zookeeper集群地址</span></span><br><span class="line">        Configuration conf = HBaseConfiguration.create();</span><br><span class="line">        conf.set(<span class="string">&quot;hbase.zookeeper.quorum&quot;</span>,<span class="string">&quot;master,node1,node2&quot;</span>);</span><br><span class="line">        <span class="comment">//创建连接</span></span><br><span class="line">        Connection connection = ConnectionFactory.createConnection(conf);</span><br><span class="line">        <span class="comment">//创建Admin对象</span></span><br><span class="line">        Admin admin = connection.getAdmin();</span><br><span class="line">        <span class="comment">//例如:创建一个test_api的表</span></span><br><span class="line">        HTableDescriptor hTableDescriptor = <span class="keyword">new</span> HTableDescriptor(TableName.valueOf(<span class="string">&quot;test_api&quot;</span>));</span><br><span class="line">        <span class="comment">//创建一个列簇，我这里取名叫做cf1</span></span><br><span class="line">        HColumnDescriptor cf1 = <span class="keyword">new</span> HColumnDescriptor(<span class="string">&quot;cf1&quot;</span>);</span><br><span class="line">        <span class="comment">//对列簇进行配置</span></span><br><span class="line"><span class="comment">//        cf1.setTimeToLive(100); //设置过期时间</span></span><br><span class="line"><span class="comment">//        cf1.setMaxVersions(3); //设置版本</span></span><br><span class="line">        <span class="comment">//增加列簇</span></span><br><span class="line">        hTableDescriptor.addFamily(cf1);</span><br><span class="line">        admin.createTable(hTableDescriptor);</span><br><span class="line">        <span class="comment">//关闭连接</span></span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013211207512.png" alt="image-20211013211207512"></p>
+<p>可以很清楚的看到已经创建成功了。</p>
+<h3 id="例二，相关API操作"><a href="#例二，相关API操作" class="headerlink" title="例二，相关API操作"></a>例二，相关API操作</h3><h4 id="put操作"><a href="#put操作" class="headerlink" title="put操作"></a>put操作</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//put</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//put操作</span></span><br><span class="line">    Table test_api = connection.getTable(TableName.valueOf(<span class="string">&quot;test_api&quot;</span>));</span><br><span class="line">    Put put = <span class="keyword">new</span> Put(<span class="string">&quot;001&quot;</span>.getBytes());</span><br><span class="line">    put.addColumn(<span class="string">&quot;cf1&quot;</span>.getBytes(),<span class="string">&quot;name&quot;</span>.getBytes(),<span class="string">&quot;方世涛&quot;</span>.getBytes());</span><br><span class="line">    test_api.put(put);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013222419119.png" alt="image-20211013222419119"></p>
+<h4 id="get操作"><a href="#get操作" class="headerlink" title="get操作"></a>get操作</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//get</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Table test_api = connection.getTable(table);</span><br><span class="line">    Get get = <span class="keyword">new</span> Get(<span class="string">&quot;001&quot;</span>.getBytes());</span><br><span class="line">    Result result = test_api.get(get);</span><br><span class="line">    <span class="keyword">byte</span>[] value = result.getValue(<span class="string">&quot;cf1&quot;</span>.getBytes(), <span class="string">&quot;name&quot;</span>.getBytes());</span><br><span class="line">    System.out.println(Bytes.toString(value));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211013233134270.png" alt="image-20211013233134270"></p>
+<p>可以很清楚的看到已经查找成功。</p>
+<h4 id="alter操作"><a href="#alter操作" class="headerlink" title="alter操作"></a>alter操作</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//alter table</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">alter</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Admin admin = connection.getAdmin();</span><br><span class="line">    <span class="comment">//获取表原有的结构</span></span><br><span class="line">    HTableDescriptor tableDescriptor = admin.getTableDescriptor(table);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取所有列簇构成的HColumnDescriptor数组</span></span><br><span class="line">    HColumnDescriptor[] columnFamilies = tableDescriptor.getColumnFamilies();</span><br><span class="line">    <span class="comment">//遍历所有的列簇</span></span><br><span class="line">    <span class="keyword">for</span> (HColumnDescriptor columnFamily : columnFamilies) &#123;</span><br><span class="line">        <span class="comment">//获取列簇的名称</span></span><br><span class="line">        String cfName = columnFamily.getNameAsString();</span><br><span class="line">        <span class="comment">//对名字名为cf1的列簇进行修改</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;cf1&quot;</span>.equals(cfName))&#123;</span><br><span class="line">            <span class="comment">//修改TTL,重新设为10000</span></span><br><span class="line">            columnFamily.setTimeToLive(<span class="number">10000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//修改表的结构</span></span><br><span class="line">    admin.modifyTable(table,tableDescriptor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/10/09/HBase%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/童年.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">HBase安装教程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/10/09/HBase安装教程/" title="HBase安装教程"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/童年.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-09</div><div class="title">HBase安装教程</div></div></a></div><div><a href="/2021/09/20/Hadoop学习/" title="Hadoop学习"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/初音未来.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-20</div><div class="title">Hadoop学习</div></div></a></div><div><a href="/2021/10/08/HiveSQL练习题/" title="HiveSQL练习题"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-08</div><div class="title">HiveSQL练习题</div></div></a></div><div><a href="/2021/09/25/Hive环境搭建/" title="Hive环境搭建"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/樱花.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-25</div><div class="title">Hive环境搭建</div></div></a></div><div><a href="/2021/09/23/Zookeeper/" title="Zookeeper"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E8%8A%B1%E7%81%AB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-23</div><div class="title">Zookeeper</div></div></a></div><div><a href="/2021/09/22/HDFS学习小结/" title="HDFS学习小结"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/千与千寻.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-22</div><div class="title">HDFS学习小结</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HBase"><span class="toc-number">1.</span> <span class="toc-text">HBase</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">HBase数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.1.</span> <span class="toc-text">逻辑结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.2.</span> <span class="toc-text">物理结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">数据模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">HBase基本架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase-Shell%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.</span> <span class="toc-text">HBase Shell操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase%E8%BF%9B%E9%98%B6"><span class="toc-number">1.5.</span> <span class="toc-text">HBase进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase%E8%AF%A6%E7%BB%86%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="toc-number">1.5.1.</span> <span class="toc-text">HBase详细架构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase%E5%86%99%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">HBase写流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase%E8%AF%BB%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.3.</span> <span class="toc-text">HBase读流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MemStore-Flush"><span class="toc-number">1.5.4.</span> <span class="toc-text">MemStore Flush</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StoreFile-Compaction"><span class="toc-number">1.5.5.</span> <span class="toc-text">StoreFile Compaction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Region-Split"><span class="toc-number">1.5.6.</span> <span class="toc-text">Region Split</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase-JavaAPI%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.</span> <span class="toc-text">HBase JavaAPI操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E4%B8%80%EF%BC%9A%E5%88%9B%E5%BB%BAtest-api%E8%A1%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">例一：创建test_api表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%EF%BC%8C%E6%8C%87%E5%AE%9Azookeeper%E9%9B%86%E7%BE%A4%E5%9C%B0%E5%9D%80"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">创建配置，指定zookeeper集群地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">创建连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAAdmin%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.6.1.3.</span> <span class="toc-text">创建Admin对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%97%E7%B0%87-%E6%88%91%E8%BF%99%E9%87%8C%E5%8F%96%E5%90%8D%E5%8F%AB%E5%81%9Acf1"><span class="toc-number">1.6.1.4.</span> <span class="toc-text">创建列簇,我这里取名叫做cf1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E5%88%97%E7%B0%87%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.1.5.</span> <span class="toc-text">对列簇进行配置(可选操作)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E5%88%97%E7%B0%87"><span class="toc-number">1.6.1.6.</span> <span class="toc-text">增加列簇</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.6.1.7.</span> <span class="toc-text">关闭连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%E6%89%80%E7%A4%BA"><span class="toc-number">1.6.1.8.</span> <span class="toc-text">总代码如下所示</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E4%BA%8C%EF%BC%8C%E7%9B%B8%E5%85%B3API%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.2.</span> <span class="toc-text">例二，相关API操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#put%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">put操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">get操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#alter%E6%93%8D%E4%BD%9C"><span class="toc-number">1.6.2.3.</span> <span class="toc-text">alter操作</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/09/02/h5Cn13cVUkfd4ON.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="2919023249" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
