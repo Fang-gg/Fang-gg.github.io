@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MySQL学习---day02 | Wind</title><meta name="keywords" content="MySQL"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MySQL关于查询结果集的去重，使用关键字distinct例如:eg1去除emp中的重复记录 select distinct deptno,job from emp;   注意:distinct只能出现在所有字段的最前面！！！    eg2统计岗位的数量 select count(distinct job) from emp;  连接查询2.1在实际开发过程中,大部分的情况都不是从单表之中查询，都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL学习---day02">
+<meta property="og:url" content="http://example.com/2021/09/02/MySQL%E5%AD%A6%E4%B9%A0-day02/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="MySQL关于查询结果集的去重，使用关键字distinct例如:eg1去除emp中的重复记录 select distinct deptno,job from emp;   注意:distinct只能出现在所有字段的最前面！！！    eg2统计岗位的数量 select count(distinct job) from emp;  连接查询2.1在实际开发过程中,大部分的情况都不是从单表之中查询，都">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%9F%83%E7%BD%97%E8%8A%92%E6%A9%98%E9%BB%84.jpg">
+<meta property="article:published_time" content="2021-09-02T12:04:55.000Z">
+<meta property="article:modified_time" content="2021-09-04T13:41:45.957Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%9F%83%E7%BD%97%E8%8A%92%E6%A9%98%E9%BB%84.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/09/02/MySQL%E5%AD%A6%E4%B9%A0-day02/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MySQL学习---day02',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-09-04 21:41:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%9F%83%E7%BD%97%E8%8A%92%E6%A9%98%E9%BB%84.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL学习---day02</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-09-02T12:04:55.000Z" title="发表于 2021-09-02 20:04:55">2021-09-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-09-04T13:41:45.957Z" title="更新于 2021-09-04 21:41:45">2021-09-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/MySQL%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/">MySQL学习心得</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL学习---day02"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="关于查询结果集的去重，使用关键字distinct"><a href="#关于查询结果集的去重，使用关键字distinct" class="headerlink" title="关于查询结果集的去重，使用关键字distinct"></a>关于查询结果集的去重，使用关键字distinct</h2><p>例如:eg1去除emp中的重复记录</p>
+<p>select distinct deptno,job from emp;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212212.png"></p>
+<blockquote>
+<p><strong>注意:distinct只能出现在所有字段的最前面！！！</strong> </p>
+</blockquote>
+<p> eg2统计岗位的数量</p>
+<p>select count(distinct job) from emp;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212348.png"></p>
+<h2 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h2><p><strong>2.1</strong>在实际开发过程中,大部分的情况都不是从单表之中查询，都是许多表关联起来查询。</p>
+<p><strong>2.2</strong>连接查询的分类</p>
+<p>内连接，包括等值连接，非等值连接，自连接</p>
+<p>外连接，包括左外连接(左连接)，右外连接(右连接)</p>
+<p>全连接</p>
+<p><strong>2.3</strong>在表的连接查询中有一种现象叫做笛卡尔积现象</p>
+<p>例如:找出每一个员工的部门名称，要求显示员工名和部门名。</p>
+<p>select ename,dname from emp,dept;    //这里能看到一共有56条记录</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212448.png"></p>
+<blockquote>
+<p><strong>笛卡尔乘积现象:当两张表进行连接查询的时候，没有任何条件进行限制，最终的查询结果条数是两张表记录条数的乘积。</strong></p>
+</blockquote>
+<p>但一般都是用表的别名这种语句进行查询</p>
+<p>select e.ename,d.dname from emp e,dept d;</p>
+<p>表的别名有什么好处？</p>
+<p>No1.执行效率高 No2.可读性好</p>
+<blockquote>
+<p><strong>2.4</strong> <strong>避免笛卡尔积现象可以采用加条件过滤，但是避免笛卡尔积现象不会减少匹配次数，加条件只不过是显示出了有效记录。</strong></p>
+</blockquote>
+<p><strong>2.5 内连接中的等值连接</strong></p>
+<p>最大的特点是:条件是等量关系 </p>
+<p>常用语法 select e.ename,d.dname from emp e inner join dept d on e.deptno = d.deptno;//SQL99语法，这里的inner可以省略。效果如下所示</p>
+<p>SQL99语法比较清晰，表的连接条件和之后的where条件分离了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212632.png"></p>
+<p> <strong>2.6内连接中的非等值连接</strong></p>
+<p>最大的特点是:连接条件中的关系是非等量关系</p>
+<p>例如:找出每个员工的工资等级，要求显示员工名，工资，工资等级</p>
+<p>select e.ename,e.sal,s.grade from emp e join salgrade s on e.sal between s.losal and s.hisal;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212811.png"></p>
+<p> <strong>2.7内连接中的自连接</strong></p>
+<p>最大特点是:一张表可以看作两张表，自己连自己。</p>
+<p>例如:找出每个员工的上级领导，要求显示员工名和对应的领导名。</p>
+<p>select a.ename as ‘员工名’,b.ename as ‘领导名’ from emp a join emp b on a.mgr = b.empno;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212837.png"></p>
+<p> <strong>2.8外连接</strong></p>
+<p>外连接和内连接的区别</p>
+<p>​    内连接:假设A和B进行连接，使用内连接的话，凡是A表和B表能够匹配上的记录都查询出来，这就是内连接。AB两张表没有主副之分，两张表是平等的。</p>
+<p>​    外连接:<br>​     假设A和B表进行连接，使用外连接的话，AB两张表中有一张表是主表，一张表是副表，主要查询主表中的数据，捎带着查询副表，当副表中的数据没有和主表中的数据匹配上，副表自动模拟出NULL与之匹配。</p>
+<p>外连接的分类？<br>     左外连接（左连接）：表示左边的这张表是主表。<br>     右外连接（右连接）：表示右边的这张表是主表。</p>
+<p>​     左连接有右连接的写法，右连接也会有对应的左连接的写法。</p>
+<p>例如:找出每个员工的上级领导</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212928.png"></p>
+<p>select a.ename as ‘员工名’,b.ename as ‘领导名’ from emp a left join emp b on a.mgr = b.empno;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904212959.png"></p>
+<p> 这里之所以比上面的查询数据多了一个KING，是因为KING也算是员工，但是他是大BOSS，没有上级领导。</p>
+<blockquote>
+<p><strong>外连接最重要的特点是:主表的数据无条件的全部都查出来</strong></p>
+</blockquote>
+<p>例如:找出哪个部门没有员工</p>
+<p>select d.* from dept d left join emp e on d.deptno = e.deptno where e.empno is null;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213100.png"></p>
+<p> <strong>2.9三张表的连接查询</strong></p>
+<p>例如:找出每一个员工的部门名称以及工资等级</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EMP e</span><br><span class="line">+-------+--------+---------+--------+</span><br><span class="line">| empno | ename  | sal     | deptno |</span><br><span class="line">+-------+--------+---------+--------+</span><br><span class="line">|  7369 | SMITH  |  800.00 |     20 |</span><br><span class="line">|  7499 | ALLEN  | 1600.00 |     30 |</span><br><span class="line">|  7521 | WARD   | 1250.00 |     30 |</span><br><span class="line">|  7566 | JONES  | 2975.00 |     20 |</span><br><span class="line">|  7654 | MARTIN | 1250.00 |     30 |</span><br><span class="line">|  7698 | BLAKE  | 2850.00 |     30 |</span><br><span class="line">|  7782 | CLARK  | 2450.00 |     10 |</span><br><span class="line">|  7788 | SCOTT  | 3000.00 |     20 |</span><br><span class="line">|  7839 | KING   | 5000.00 |     10 |</span><br><span class="line">|  7844 | TURNER | 1500.00 |     30 |</span><br><span class="line">|  7876 | ADAMS  | 1100.00 |     20 |</span><br><span class="line">|  7900 | JAMES  |  950.00 |     30 |</span><br><span class="line">|  7902 | FORD   | 3000.00 |     20 |</span><br><span class="line">|  7934 | MILLER | 1300.00 |     10 |</span><br><span class="line">+-------+--------+---------+--------+</span><br><span class="line">DEPT d</span><br><span class="line">+--------+------------+----------+</span><br><span class="line">| DEPTNO | DNAME      | LOC      |</span><br><span class="line">+--------+------------+----------+</span><br><span class="line">|     10 | ACCOUNTING | NEW YORK |</span><br><span class="line">|     20 | RESEARCH   | DALLAS   |</span><br><span class="line">|     30 | SALES      | CHICAGO  |</span><br><span class="line">|     40 | OPERATIONS | BOSTON   |</span><br><span class="line">+--------+------------+----------+</span><br><span class="line">SALGRADE s</span><br><span class="line">+-------+-------+-------+</span><br><span class="line">| GRADE | LOSAL | HISAL |</span><br><span class="line">+-------+-------+-------+</span><br><span class="line">|     1 |   700 |  1200 |</span><br><span class="line">|     2 |  1201 |  1400 |</span><br><span class="line">|     3 |  1401 |  2000 |</span><br><span class="line">|     4 |  2001 |  3000 |</span><br><span class="line">|     5 |  3001 |  9999 |</span><br><span class="line">+-------+-------+-------+</span><br></pre></td></tr></table></figure>
+
+<p> select e.ename,d.dname,s.grade from emp e left join dept d on e.deptno = d.deptno left join salgrade s on e.sal between s.losal and s.hisal;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213435.png"></p>
+<h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><p><strong>3.1什么是子查询？子查询都可以出现在哪里？</strong></p>
+<p>select语句当中嵌套select语句，被嵌套的select语句是子查询。<br>   子查询可以出现在哪里？<br>     select<br>       ..(select).<br>     from<br>       ..(select).<br>     where<br>       ..(select).</p>
+<p><strong>3.2where子句中使用子查询</strong></p>
+<p>例如:找出高于平均薪资的员工信息</p>
+<p>select * from emp where sal &gt; (select avg(sal) from emp);</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213511.png"></p>
+<p> <strong>3.3from后面嵌套子查询</strong></p>
+<p>例如:找出每个部门平均薪水的薪资等级。</p>
+<p>第一步:找出每个部门平均薪水(按照部门编号分组，求sal的平均值)</p>
+<p>select deptno,avg(sal) as avgsal from emp group by deptno;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213540.png"></p>
+<p> 第二步:将以上的查询结果当作临时表t，让t表和salgrade s表连接，条件是:t.avgsal between s.losal and s.hisal;</p>
+<p>select t.*,s.grade from (select deptno,avg(sal) as avgsal from emp group by deptno) t left join salgrade s on t.avgsal between s.losal and s.hisal;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213613.png"></p>
+<p> <strong>3.4在select后面嵌套子查询</strong></p>
+<h2 id="union-可以将查询结果相加"><a href="#union-可以将查询结果相加" class="headerlink" title="union(可以将查询结果相加)"></a>union(可以将查询结果相加)</h2><p>例如:找出工作岗位是salesman和manager的员工</p>
+<p>按照之前讲的也能写出来</p>
+<p>第一种:select ename,job from emp where job = ‘salesman’ or job = ‘manager’;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213711.png"></p>
+<p>第二种:用in。select ename,job from emp where job in (‘manager’,’salesman’); </p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213746.png"></p>
+<p>第三种:用union。select ename,job from emp where job = ‘manager’ </p>
+<p>​              union</p>
+<p>​              select ename,job from emp where job = ‘salesman’;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904213902.png"></p>
+<blockquote>
+<p><strong>采用union就是将表与表之间的查询结果做拼接。 注意:用union查询时，必须保证前面的查询结果的列的数量和后一个查询结果的列的数量保持一致。</strong></p>
+</blockquote>
+<h2 id="limit-重点中的重点！！！以后分页查询就靠它"><a href="#limit-重点中的重点！！！以后分页查询就靠它" class="headerlink" title="limit(重点中的重点！！！以后分页查询就靠它)"></a>limit(重点中的重点！！！以后分页查询就靠它)</h2><p>5.1 limit是MySQL中所特有的，其他的数据库都没有，不通用。</p>
+<p>5.2 limit取结果集中的部分数据，这是它的作用</p>
+<p>5.3 语法机制</p>
+<blockquote>
+<p><strong>limit startIndex,length   startIndex表示起始位置，length表示取几个</strong></p>
+</blockquote>
+<p> 例如:取出工资前五名的员工</p>
+<p>select ename,sal from emp order by sal limit 5;//我这里是按照升序排</p>
+<p>也可以这样写:select ename,sal from emp order by sal limit 0,5;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904214034.png"></p>
+<p><strong>5.4 limit是sql语句最后执行的一个环节！！！</strong> </p>
+<p><strong>执行顺序如下:</strong></p>
+<pre><code>select            5
+    ...
+from            1
+    ...        
+where            2
+    ...    
+group by        3
+    ...
+having            4
+    ...
+order by        6
+    ...
+limit            7
+    ...;
+</code></pre>
+<p>例如:找出工资排名在第4到第9名的员工</p>
+<p>select ename,sal from emp order by sal limit 3,6;</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20210904214112.png"></p>
+<p>5.6 通用的标准分页sql</p>
+<p>例如:每页显示3条信息</p>
+<p>第一页:0，3；</p>
+<p>第二页:3, 3;</p>
+<p>第三页:6，3；</p>
+<p>此时就能发现规律</p>
+<blockquote>
+<p><strong>每页显示n条消息,那么规律如下</strong></p>
+<p><strong>第pageNo页:(pageNo - 1) * n，n   //这里的pageNo就是显示第几页，n表示每页显示多少条记录</strong></p>
+</blockquote>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%9F%83%E7%BD%97%E8%8A%92%E6%A9%98%E9%BB%84.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/09/05/MySQL%E5%AD%A6%E4%B9%A0-day03/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E6%B5%B7%E7%90%B4%E7%83%9F.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MySQL学习---day03</div></div></a></div><div class="next-post pull-right"><a href="/2021/09/02/MySQL%E5%AD%A6%E4%B9%A0-day01/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E6%8F%92%E7%94%BB3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MySQL学习---day01</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/09/02/MySQL学习-day01/" title="MySQL学习---day01"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E6%8F%92%E7%94%BB3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-02</div><div class="title">MySQL学习---day01</div></div></a></div><div><a href="/2021/09/05/MySQL学习-day03/" title="MySQL学习---day03"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E6%B5%B7%E7%90%B4%E7%83%9F.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-05</div><div class="title">MySQL学习---day03</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL"><span class="toc-number">1.</span> <span class="toc-text">MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E9%9B%86%E7%9A%84%E5%8E%BB%E9%87%8D%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%85%B3%E9%94%AE%E5%AD%97distinct"><span class="toc-number">1.1.</span> <span class="toc-text">关于查询结果集的去重，使用关键字distinct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.</span> <span class="toc-text">连接查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.3.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#union-%E5%8F%AF%E4%BB%A5%E5%B0%86%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E7%9B%B8%E5%8A%A0"><span class="toc-number">1.4.</span> <span class="toc-text">union(可以将查询结果相加)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#limit-%E9%87%8D%E7%82%B9%E4%B8%AD%E7%9A%84%E9%87%8D%E7%82%B9%EF%BC%81%EF%BC%81%EF%BC%81%E4%BB%A5%E5%90%8E%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%B0%B1%E9%9D%A0%E5%AE%83"><span class="toc-number">1.5.</span> <span class="toc-text">limit(重点中的重点！！！以后分页查询就靠它)</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%9F%83%E7%BD%97%E8%8A%92%E6%A9%98%E9%BB%84.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="2919023249" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

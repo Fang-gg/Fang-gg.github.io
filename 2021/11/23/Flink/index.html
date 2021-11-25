@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Flink | Wind</title><meta name="keywords" content="大数据"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Flink简单学习Flink主要侧重于流处理，Spark主要侧重于批处理。因此在后续工作中，Flink应该会是主流。 首先我们要了解流处理和批处理的区别。    流处理&#x2F;实时计算 批处理&#x2F;离线计算    数据大小未知 数据大小固定   简单操作 复杂操作   及时响应 需要一段时间   数据到达次序独立    再次提取数据代价大 方便查询计算结果   那什么是Flink勒？  Apache Fli">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink">
+<meta property="og:url" content="http://example.com/2021/11/23/Flink/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="Flink简单学习Flink主要侧重于流处理，Spark主要侧重于批处理。因此在后续工作中，Flink应该会是主流。 首先我们要了解流处理和批处理的区别。    流处理&#x2F;实时计算 批处理&#x2F;离线计算    数据大小未知 数据大小固定   简单操作 复杂操作   及时响应 需要一段时间   数据到达次序独立    再次提取数据代价大 方便查询计算结果   那什么是Flink勒？  Apache Fli">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg">
+<meta property="article:published_time" content="2021-11-23T11:15:08.000Z">
+<meta property="article:modified_time" content="2021-11-25T14:58:42.605Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/11/23/Flink/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flink',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-11-25 22:58:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Flink</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-23T11:15:08.000Z" title="发表于 2021-11-23 19:15:08">2021-11-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-25T14:58:42.605Z" title="更新于 2021-11-25 22:58:42">2021-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0/">大数据学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Flink"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Flink简单学习"><a href="#Flink简单学习" class="headerlink" title="Flink简单学习"></a>Flink简单学习</h1><p><strong>Flink主要侧重于流处理，Spark主要侧重于批处理。因此在后续工作中，Flink应该会是主流。</strong></p>
+<p>首先我们要了解流处理和批处理的区别。</p>
+<table>
+<thead>
+<tr>
+<th>流处理/实时计算</th>
+<th>批处理/离线计算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据大小未知</td>
+<td>数据大小固定</td>
+</tr>
+<tr>
+<td>简单操作</td>
+<td>复杂操作</td>
+</tr>
+<tr>
+<td>及时响应</td>
+<td>需要一段时间</td>
+</tr>
+<tr>
+<td>数据到达次序独立</td>
+<td></td>
+</tr>
+<tr>
+<td>再次提取数据代价大</td>
+<td>方便查询计算结果</td>
+</tr>
+</tbody></table>
+<p><strong>那什么是Flink勒？</strong></p>
+<blockquote>
+<p>Apache Flink是一个框架和分布式处理引擎，用于对无界和有界数据流进行有状态计算。Flink设计为在所有常见的集群环境中运行，以内存速度和任何规模执行计算。</p>
+</blockquote>
+<h2 id="Flink的简单使用"><a href="#Flink的简单使用" class="headerlink" title="Flink的简单使用"></a>Flink的简单使用</h2><p><strong>WordCount——Flink</strong></p>
+<p>这里我们是用本地模式直接在IDEA中去运行，用<strong>nc -lk</strong>来模拟输入的流。代码如下。</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.fst.core</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Demo1WordCount</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建Flink的环境</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">val</span> environment: <span class="type">StreamExecutionEnvironment</span> = <span class="type">StreamExecutionEnvironment</span>.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置并行度</span></span><br><span class="line">    environment.setParallelism(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取socket数据</span></span><br><span class="line">    <span class="comment">// nc -lk 8888</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> linesDS: <span class="type">DataStream</span>[<span class="type">String</span>] = environment.socketTextStream(<span class="string">&quot;master&quot;</span>, <span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将单词拆分出来</span></span><br><span class="line">    <span class="keyword">val</span> wordDS: <span class="type">DataStream</span>[<span class="type">String</span>] = linesDS.flatMap(line =&gt; line.split(<span class="string">&quot;,&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转换成KV格式</span></span><br><span class="line">    <span class="keyword">val</span> kvDS: <span class="type">DataStream</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = wordDS.map(word =&gt; (word, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按照单词分组</span></span><br><span class="line">    <span class="keyword">val</span> keyByDS: <span class="type">KeyedStream</span>[(<span class="type">String</span>, <span class="type">Int</span>), ((<span class="type">String</span>, <span class="type">Int</span>), <span class="type">Int</span>)] = kvDS.keyBy(word =&gt; (word, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 统计单词的数量</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * sum算子内部是有状态计算，累加统计 传入的是下标</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">val</span> countDS: <span class="type">DataStream</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = keyByDS.sum(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打印结果</span></span><br><span class="line">    countDS.print()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 启动flink</span></span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123203651880.png" alt="image-20211123203651880"></p>
+<p>可以很直观的看到当我们用nc模拟的时候，只要有数据输入，那么控制台就会瞬间(几毫秒)输出结果。源源不断的数据输入，就会有源源不断的数据输出。这个也被称为 <strong>无界流</strong>。</p>
+<p>当然了，在Flink中，上游task对下游task发送数据是有条件的</p>
+<ul>
+<li>数据达到32K(buffer)</li>
+<li>时间达到200毫秒</li>
+</ul>
+<p>在Flink中，所有的task是一起启动的。</p>
+<p><strong>Spark和Flink任务调度方式</strong>(Flink和Spark都是粗粒度调度资源，即一开始就将资源全部申请下来)</p>
+<table>
+<thead>
+<tr>
+<th>Spark任务调度</th>
+<th>Flink任务调度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1、构建DAG有向无环图</td>
+<td>1、构建DataFlow</td>
+</tr>
+<tr>
+<td>2、切分Stage</td>
+<td>2、拆分成多个task</td>
+</tr>
+<tr>
+<td>3、按照顺序将stage发送到taskScheduler</td>
+<td>3、将所有task部署启动</td>
+</tr>
+<tr>
+<td>4、taskScheduler将task发送到Executor中执行</td>
+<td>4、等待数据流入并且处理数据</td>
+</tr>
+<tr>
+<td>其中Spark是MapReduce模型</td>
+<td>Flink是持续流模型</td>
+</tr>
+</tbody></table>
+<h2 id="有界流和无界流"><a href="#有界流和无界流" class="headerlink" title="有界流和无界流"></a>有界流和无界流</h2><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123214010094.png" alt="image-20211123214010094"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123220828681.png" alt="image-20211123220828681"></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><h3 id="基于本地集合构建DataStream"><a href="#基于本地集合构建DataStream" class="headerlink" title="基于本地集合构建DataStream"></a><strong>基于本地集合构建DataStream</strong></h3><figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.fst.sink</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Demo1Source</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建Flink环境</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> environment: <span class="type">StreamExecutionEnvironment</span> = <span class="type">StreamExecutionEnvironment</span>.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置并行度</span></span><br><span class="line">    environment.setParallelism(<span class="number">2</span>)</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 基于本地集合构建DataStream  ----有界流</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> listDS: <span class="type">DataStream</span>[<span class="type">Int</span>] = environment.fromCollection(<span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>))</span><br><span class="line">    listDS.print()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 启动flink</span></span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123214352614.png" alt="image-20211123214352614"></p>
+<p>可以看到运行完毕之后程序就被终止了，有界流。</p>
+<h3 id="基于文件构建DataStream"><a href="#基于文件构建DataStream" class="headerlink" title="基于文件构建DataStream"></a>基于文件构建DataStream</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.fst.sink</span><br><span class="line"></span><br><span class="line">import org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line">object Demo1Source &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 创建Flink环境</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    val environment: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    // 设置并行度</span><br><span class="line">    environment.setParallelism(2)</span><br><span class="line">    /**</span><br><span class="line">     * 基于文件构建DataStream     ----有界流</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    val studentDS: DataStream[String] = environment.readTextFile(&quot;data/students.txt&quot;)</span><br><span class="line"></span><br><span class="line">    studentDS</span><br><span class="line">      .map(line=&gt;(line.split(&quot;,&quot;)(4),1))</span><br><span class="line">      .keyBy(word=&gt;(word,1))</span><br><span class="line">      .sum(1)</span><br><span class="line">      .print()</span><br><span class="line"></span><br><span class="line">    // 启动flink</span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123215548257.png" alt="image-20211123215548257"></p>
+<p>可以很直观的看到班级人数已经统计出来了。</p>
+<h3 id="基于Socket构建DataStream"><a href="#基于Socket构建DataStream" class="headerlink" title="基于Socket构建DataStream"></a>基于Socket构建DataStream</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.fst.sink</span><br><span class="line"></span><br><span class="line">import org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line">object Demo1Source &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 创建Flink环境</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    val environment: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    // 设置并行度</span><br><span class="line">    environment.setParallelism(2)</span><br><span class="line">    /**</span><br><span class="line">     * 基于Socket构建DataStream   ----无界流</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    val socketDS: DataStream[String] = environment.socketTextStream(&quot;master&quot;, 8888)</span><br><span class="line">    socketDS.print()</span><br><span class="line"></span><br><span class="line">    // 启动flink</span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211123215813840.png" alt="image-20211123215813840"></p>
+<p>可以很直观的看到，模拟端输入数据之后，控制台就会立即响应并且输出数据。</p>
+<h3 id="自定义source"><a href="#自定义source" class="headerlink" title="自定义source"></a>自定义source</h3><figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.fst.sink</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Demo1Source</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建Flink环境</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> environment: <span class="type">StreamExecutionEnvironment</span> = <span class="type">StreamExecutionEnvironment</span>.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置并行度</span></span><br><span class="line">    environment.setParallelism(<span class="number">2</span>)</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义source，实现SourceFunction接口</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> myDS: <span class="type">DataStream</span>[<span class="type">Int</span>] = environment.addSource(<span class="keyword">new</span> <span class="type">MySource</span>)</span><br><span class="line"></span><br><span class="line">    myDS.print()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 启动flink</span></span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义source，实现SourceFunction接口</span></span><br><span class="line"><span class="comment">     * 实现run方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MySource</span> <span class="keyword">extends</span> <span class="title">SourceFunction</span>[<span class="type">Int</span>]</span>&#123;</span><br><span class="line">      <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">run</span></span>(sourceContext: <span class="type">SourceFunction</span>.<span class="type">SourceContext</span>[<span class="type">Int</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)&#123;   <span class="comment">// 这边要是死循环就是无界流，要是有限循环就是有界流。</span></span><br><span class="line">          <span class="comment">// 将数据发送到下游</span></span><br><span class="line">          sourceContext.collect(i)</span><br><span class="line"></span><br><span class="line">          <span class="type">Thread</span>.sleep(<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">          i += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 再任务取消的时候执行，用于回收资源</span></span><br><span class="line"><span class="comment">       *</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">cancel</span></span>(): <span class="type">Unit</span> = &#123;&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义source读取mysql数据"><a href="#自定义source读取mysql数据" class="headerlink" title="自定义source读取mysql数据"></a>自定义source读取mysql数据</h3><figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.fst.source</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.configuration.<span class="type">Configuration</span></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.functions.source.&#123;<span class="type">RichSourceFunction</span>, <span class="type">SourceFunction</span>&#125;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.&#123;<span class="type">Connection</span>, <span class="type">DriverManager</span>, <span class="type">PreparedStatement</span>, <span class="type">ResultSet</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Demo2MysqlSource</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> environment: <span class="type">StreamExecutionEnvironment</span> = <span class="type">StreamExecutionEnvironment</span>.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">    environment.setParallelism(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用自定义source</span></span><br><span class="line">    <span class="keyword">val</span> myDS: <span class="type">DataStream</span>[(<span class="type">String</span>, <span class="type">String</span>, <span class="type">String</span>, <span class="type">Int</span>)] = environment.addSource(<span class="keyword">new</span> <span class="type">MysqlSource</span>)</span><br><span class="line"></span><br><span class="line">    myDS.print()</span><br><span class="line"></span><br><span class="line">    environment.execute()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义读取mysql  ----有界流</span></span><br><span class="line"><span class="comment"> * SourceFunction ----单一的source，run方法只会执行一次</span></span><br><span class="line"><span class="comment"> * ParallelSourceFunction  ----并行的source，有多少个并行度就会有多少个source</span></span><br><span class="line"><span class="comment"> * RichSourceFunction  多了open和close方法</span></span><br><span class="line"><span class="comment"> * RichParallelSourceFunction</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MysqlSource</span> <span class="keyword">extends</span> <span class="title">RichSourceFunction</span>[(<span class="type">String</span>, <span class="type">String</span>, <span class="type">String</span>, <span class="type">Int</span>)] </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> con: <span class="type">Connection</span> = _</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   * open 方法会再run方法之前执行</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   * @param parameters flink 配置文件对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">open</span></span>(parameters: <span class="type">Configuration</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//加载驱动</span></span><br><span class="line">    <span class="type">Class</span>.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1、建立链接</span></span><br><span class="line">    con = <span class="type">DriverManager</span>.getConnection(<span class="string">&quot;jdbc:mysql://master:3306/tour&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;123456&quot;</span>)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 在run方法之后执行</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">close</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//关闭链接</span></span><br><span class="line">    con.close()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">run</span></span>(ctx: <span class="type">SourceFunction</span>.<span class="type">SourceContext</span>[(<span class="type">String</span>, <span class="type">String</span>, <span class="type">String</span>, <span class="type">Int</span>)]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//查询数据</span></span><br><span class="line">    <span class="keyword">val</span> stat: <span class="type">PreparedStatement</span> = con.prepareStatement(<span class="string">&quot;select * from usertag limit 2&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> resultSet: <span class="type">ResultSet</span> = stat.executeQuery()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//解析数据</span></span><br><span class="line">    <span class="keyword">while</span> (resultSet.next()) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">val</span> mdn: <span class="type">String</span> = resultSet.getString(<span class="string">&quot;mdn&quot;</span>)</span><br><span class="line">      <span class="keyword">val</span> name: <span class="type">String</span> = resultSet.getString(<span class="string">&quot;name&quot;</span>)</span><br><span class="line">      <span class="keyword">val</span> gender: <span class="type">String</span> = resultSet.getString(<span class="string">&quot;gender&quot;</span>)</span><br><span class="line">      <span class="keyword">val</span> age: <span class="type">Int</span> = resultSet.getInt(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">      <span class="comment">//将数据发送到下游</span></span><br><span class="line">      ctx.collect((mdn, name, gender, age))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">cancel</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211124100217567.png" alt="image-20211124100217567"></p>
+<h2 id="Flink中的算子"><a href="#Flink中的算子" class="headerlink" title="Flink中的算子"></a>Flink中的算子</h2><p>GitHub仓库地址: <a target="_blank" rel="noopener" href="https://github.com/Fang-gg/Flink.git">https://github.com/Fang-gg/Flink.git</a></p>
+<h2 id="Flink集群模式搭建"><a href="#Flink集群模式搭建" class="headerlink" title="Flink集群模式搭建"></a>Flink集群模式搭建</h2><h3 id="standallone-cluster"><a href="#standallone-cluster" class="headerlink" title="standallone cluster"></a>standallone cluster</h3><h4 id="上传解压并配置环境变量"><a href="#上传解压并配置环境变量" class="headerlink" title="上传解压并配置环境变量"></a>上传解压并配置环境变量</h4><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125192813480.png" alt="image-20211125192813480"></p>
+<h4 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim conf/flink-conf.yaml</span><br><span class="line">jobmanager.rpc.address: master   主节点ip地址</span><br><span class="line">vim conf/masters  </span><br><span class="line">改成主节点ip</span><br></pre></td></tr></table></figure>
+
+<p>由于我这里的集群条件是伪分布式，因此不需要分发节点。</p>
+<h4 id="启动集群"><a href="#启动集群" class="headerlink" title="启动集群"></a>启动集群</h4><blockquote>
+<p>start-cluster.sh</p>
+</blockquote>
+<h4 id="访问web界面"><a href="#访问web界面" class="headerlink" title="访问web界面"></a>访问web界面</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://master:8081/">http://master:8081</a></p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125193517985.png" alt="image-20211125193517985"></p>
+<h4 id="提交任务-–-将代码打包"><a href="#提交任务-–-将代码打包" class="headerlink" title="提交任务  – 将代码打包"></a>提交任务  – 将代码打包</h4><ul>
+<li>在web界面提交<ul>
+<li>将代码打包并且通过web界面上传，之后submit即可</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125194133242.png" alt="image-20211125194133242"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125194226248.png" alt="image-20211125194226248"></p>
+<p>输入数据之后在web端的Task Managers处查看结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125194758348.png" alt="image-20211125194758348"></p>
+<ul>
+<li>用flink命令提交任务<ul>
+<li>flink run -c 类名 flink-1.0.jar </li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125200050988.png" alt="image-20211125200050988"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125200113427.png" alt="image-20211125200113427"></p>
+<p>可以很明显的看到任务已经在运行了。</p>
+<h3 id="flink-on-yarn"><a href="#flink-on-yarn" class="headerlink" title="flink on yarn"></a>flink on yarn</h3><h4 id="配置HADOOP-CONF-DIR"><a href="#配置HADOOP-CONF-DIR" class="headerlink" title="配置HADOOP_CONF_DIR"></a>配置HADOOP_CONF_DIR</h4><blockquote>
+<p> vim /etc/profile</p>
+<p> export HADOOP_CONF_DIR=/usr/local/soft/hadoop-2.7.6/etc/hadoop/</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125200757086.png" alt="image-20211125200757086"></p>
+<h4 id="上传依赖"><a href="#上传依赖" class="headerlink" title="上传依赖"></a>上传依赖</h4><blockquote>
+<p>将hadoop依赖jar上传到flink  lib目录</p>
+<p>flink-shaded-hadoop-2-uber-2.6.5-10.0</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125201444705.png" alt="image-20211125201444705"></p>
+<p>flink和spark一样都是粗粒度资源申请</p>
+<h4 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h4><blockquote>
+<p>yarn-session  在yarn里面启动一个flink集群 jobManager(ApplicationMaster)</p>
+<p>先启动hadoop </p>
+<p>yarn-session.sh -jm 1024m -tm 1096m</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125202137982.png" alt="image-20211125202137982"></p>
+<h4 id="任务提交"><a href="#任务提交" class="headerlink" title="任务提交"></a>任务提交</h4><p>和standallone一样。额外不同的是yarn中可以直接提交任务到yarn。命令如下</p>
+<blockquote>
+<p>flink run -m yarn-cluster  -yjm 1024m -ytm 1096m -c 任务名 上传的jar包</p>
+<p>flink run -m yarn-cluster  -yjm 1024m -ytm 1096m -c com.fst.core.Demo1WordCount flink-1.0.jar</p>
+</blockquote>
+<ul>
+<li><p>yarn-session先在yarn中启动一个jobMansager ,所有的任务共享一个jobmanager (提交任务更快，任务之间共享jobmanager ， 相互有影响)</p>
+</li>
+<li><p>直接提交任务模型，为每一个任务启动一个joibmanager （每一个任务独立jobmanager , 任务运行稳定）</p>
+</li>
+</ul>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><h3 id="Kafka的搭建"><a href="#Kafka的搭建" class="headerlink" title="Kafka的搭建"></a>Kafka的搭建</h3><ul>
+<li>修改config/server.properties<ul>
+<li>1、broker.id=0，每一个节点broker.id 要不一样<br>2、zookeeper.connect=master:2181,node1:2181,node2:2181<br>3、log.dirs=/usr/local/soft/kafka_2.11-1.0.0/data   消息存放的位置</li>
+</ul>
+</li>
+<li>启动<ul>
+<li>先启动zk，因为kafka需要建立在zookeeper上。</li>
+<li>接着在每台节点启动broker，kafka是去中心化的架构   -daemon 后台启动   在所有节点启动<ul>
+<li>kafka-server-start.sh -daemon  /usr/local/soft/kafka_2.11-1.0.0/config/server.properties</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125221544600.png" alt="image-20211125221544600"></p>
+<p>kafka是一个消息队列。其架构如下所示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125212237561.png" alt="image-20211125212237561"></p>
+<h3 id="kafka的消息存储和生产消费模型"><a href="#kafka的消息存储和生产消费模型" class="headerlink" title="kafka的消息存储和生产消费模型"></a>kafka的消息存储和生产消费模型</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125213016639.png" alt="image-20211125213016639"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125213315146.png" alt="image-20211125213315146"></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/image-20211125214004375.png" alt="image-20211125214004375"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/11/19/%E9%A1%B9%E7%9B%AE-%E7%A6%BB%E7%BA%BF%E6%95%B0%E4%BB%93/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/异世界.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">项目--离线数仓</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/10/22/Flume学习小结/" title="Flume学习小结"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/橘子.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-22</div><div class="title">Flume学习小结</div></div></a></div><div><a href="/2021/10/09/HBase安装教程/" title="HBase安装教程"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/童年.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-09</div><div class="title">HBase安装教程</div></div></a></div><div><a href="/2021/10/18/HBase的RowKeyy设计/" title="HBase的RowKey设计"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/窗户.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-18</div><div class="title">HBase的RowKey设计</div></div></a></div><div><a href="/2021/09/20/Hadoop学习/" title="Hadoop学习"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/初音未来.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-20</div><div class="title">Hadoop学习</div></div></a></div><div><a href="/2021/10/08/HiveSQL练习题/" title="HiveSQL练习题"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-08</div><div class="title">HiveSQL练习题</div></div></a></div><div><a href="/2021/09/25/Hive环境搭建/" title="Hive环境搭建"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/樱花.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-25</div><div class="title">Hive环境搭建</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Flink%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">Flink简单学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Flink%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">Flink的简单使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E7%95%8C%E6%B5%81%E5%92%8C%E6%97%A0%E7%95%8C%E6%B5%81"><span class="toc-number">1.2.</span> <span class="toc-text">有界流和无界流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example"><span class="toc-number">1.3.</span> <span class="toc-text">Example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%9C%AC%E5%9C%B0%E9%9B%86%E5%90%88%E6%9E%84%E5%BB%BADataStream"><span class="toc-number">1.3.1.</span> <span class="toc-text">基于本地集合构建DataStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E6%9E%84%E5%BB%BADataStream"><span class="toc-number">1.3.2.</span> <span class="toc-text">基于文件构建DataStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8ESocket%E6%9E%84%E5%BB%BADataStream"><span class="toc-number">1.3.3.</span> <span class="toc-text">基于Socket构建DataStream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89source"><span class="toc-number">1.3.4.</span> <span class="toc-text">自定义source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89source%E8%AF%BB%E5%8F%96mysql%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.5.</span> <span class="toc-text">自定义source读取mysql数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flink%E4%B8%AD%E7%9A%84%E7%AE%97%E5%AD%90"><span class="toc-number">1.4.</span> <span class="toc-text">Flink中的算子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flink%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E6%90%AD%E5%BB%BA"><span class="toc-number">1.5.</span> <span class="toc-text">Flink集群模式搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#standallone-cluster"><span class="toc-number">1.5.1.</span> <span class="toc-text">standallone cluster</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E8%A7%A3%E5%8E%8B%E5%B9%B6%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">上传解压并配置环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">启动集群</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEweb%E7%95%8C%E9%9D%A2"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">访问web界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1-%E2%80%93-%E5%B0%86%E4%BB%A3%E7%A0%81%E6%89%93%E5%8C%85"><span class="toc-number">1.5.1.5.</span> <span class="toc-text">提交任务  – 将代码打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flink-on-yarn"><span class="toc-number">1.5.2.</span> <span class="toc-text">flink on yarn</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEHADOOP-CONF-DIR"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">配置HADOOP_CONF_DIR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E4%BE%9D%E8%B5%96"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">上传依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.5.2.3.</span> <span class="toc-text">启动方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">1.5.2.4.</span> <span class="toc-text">任务提交</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kafka"><span class="toc-number">1.6.</span> <span class="toc-text">Kafka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.6.1.</span> <span class="toc-text">Kafka的搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kafka%E7%9A%84%E6%B6%88%E6%81%AF%E5%AD%98%E5%82%A8%E5%92%8C%E7%94%9F%E4%BA%A7%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.6.2.</span> <span class="toc-text">kafka的消息存储和生产消费模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">1.6.3.</span> <span class="toc-text">特点</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="2919023249" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

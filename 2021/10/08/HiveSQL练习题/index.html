@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HiveSQL练习题 | Wind</title><meta name="keywords" content="大数据"><meta name="author" content="酷酷的涛"><meta name="copyright" content="酷酷的涛"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HiveSQL练习题建表语句：员工信息表emp：字段：员工id,员工名字,工作岗位,部门经理,受雇日期,薪水,奖金,部门编号英文名：EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,BONUS,DEPTNO create table emp(EMPNO int,ENAME string,JOB string,MGR int,HIREDATE string,SAL int,BONUS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HiveSQL练习题">
+<meta property="og:url" content="http://example.com/2021/10/08/HiveSQL%E7%BB%83%E4%B9%A0%E9%A2%98/index.html">
+<meta property="og:site_name" content="Wind">
+<meta property="og:description" content="HiveSQL练习题建表语句：员工信息表emp：字段：员工id,员工名字,工作岗位,部门经理,受雇日期,薪水,奖金,部门编号英文名：EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,BONUS,DEPTNO create table emp(EMPNO int,ENAME string,JOB string,MGR int,HIREDATE string,SAL int,BONUS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg">
+<meta property="article:published_time" content="2021-10-08T13:28:45.000Z">
+<meta property="article:modified_time" content="2021-10-08T14:32:35.898Z">
+<meta property="article:author" content="酷酷的涛">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/10/08/HiveSQL%E7%BB%83%E4%B9%A0%E9%A2%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 酷酷的涛","link":"链接: ","source":"来源: Wind","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HiveSQL练习题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2021-10-08 22:32:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210906160600.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Wind</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">HiveSQL练习题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-08T13:28:45.000Z" title="发表于 2021-10-08 21:28:45">2021-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-08T14:32:35.898Z" title="更新于 2021-10-08 22:32:35">2021-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0/">大数据学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HiveSQL练习题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="HiveSQL练习题"><a href="#HiveSQL练习题" class="headerlink" title="HiveSQL练习题"></a>HiveSQL练习题</h1><p>建表语句：<br><strong>员工信息表emp：</strong><br>字段：员工id,员工名字,工作岗位,部门经理,受雇日期,薪水,奖金,部门编号<br>英文名：EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,BONUS,DEPTNO</p>
+<p>create table emp(<br>EMPNO int<br>,ENAME string<br>,JOB string<br>,MGR int<br>,HIREDATE string<br>,SAL int<br>,BONUS int<br>,DEPTNO int<br>)<br>row format delimited<br>fields terminated by ‘,’;</p>
+<p>7369,SMITH,CLERK,7902,1980-12-17,800,null,20<br>7499,ALLEN,SALESMAN,7698,1981-02-20,1600,300,30<br>7521,WARD,SALESMAN,7698,1981-02-22,1250,500,30<br>7566,JONES,MANAGER,7839,1981-04-02,2975,null,20,<br>7654,MARTIN,SALESMAN,7698,1981-09-28,1250,1400,30<br>7698,BLAKE,MANAGER,7839,1981-05-01,2850,null,30<br>7782,CLARK,MANAGER,7839,1981-06-09,2450,null,10<br>7788,SCOTT,ANALYST,7566,1987-04-19,3000,null,20<br>7839,KING,PRESIDENT,null,1981-11-17,5000,null,10<br>7844,TURNER,SALESMAN,7698,1981-09-08,1500,0,30<br>7876,ADAMS,CLERK,7788,1987-05-23,1100,null,20<br>7900,JAMES,CLERK,7698,1981-12-03,950,null,30<br>7902,FORD,ANALYST,7566,1981-12-03,3000,null,20<br>7934,MILLER,CLERK,7782,1982-01-23,1300,null,10</p>
+<p><strong>部门信息表dept：</strong><br>字段：部门编号,部门名称,部门地点<br>英文名：DEPTNO,DEPTNAME,DEPTADDR</p>
+<p>create table dept(<br>DEPTNO int<br>,DEPTNAME string<br>,DEPTADDR string<br>)<br>row format delimited<br>fields terminated by ‘,’;</p>
+<p>10,ACCOUNTING,NEW YORK<br>10,ACCOUNTING,shanghai<br>20,RESEARCH,DALLAS<br>30,SALES,CHICAGO<br>40,OPERATIONS,BOSTON</p>
+<h2 id="题目与答案"><a href="#题目与答案" class="headerlink" title="题目与答案"></a>题目与答案</h2><p>1． 列出至少有一个员工的所有部门。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*) as c,deptno from emp group by deptno having c &gt;= 1;</span><br></pre></td></tr></table></figure>
+
+<p>2． 列出薪金比“SMITH”多的所有员工。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL:</span><br><span class="line">select * from emp where sal &gt; (select sal from emp where ename = &#x27;SMITH&#x27;);</span><br><span class="line"></span><br><span class="line">Hive:</span><br><span class="line">select a.ename,a.sal from</span><br><span class="line">(select ename,sal,1 as cid from emp) as a</span><br><span class="line">left join</span><br><span class="line">(select sal ,1 as cid from emp where ename=‘SMITH’) as b</span><br><span class="line">on a.cid=b.cid where a.sal&gt;b.sal;</span><br></pre></td></tr></table></figure>
+
+<p>3． 列出所有员工的姓名及其直接上级的姓名。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL:</span><br><span class="line">select worker.ename,boss.ename from emp as worker left join emp as boss on worker.mgr = boss.empno;</span><br><span class="line"></span><br><span class="line">Hive:</span><br><span class="line">select a.ename,b.ename from</span><br><span class="line">(select ename,mgr from emp) as a</span><br><span class="line">left join</span><br><span class="line">(select ename,empno from emp) as b</span><br><span class="line">on a.mgr=b.empno</span><br></pre></td></tr></table></figure>
+
+<p>4． 列出受雇日期早于其直接上级的所有员工。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select worker.ename,boss.ename</span><br><span class="line">from</span><br><span class="line">(select empno,ename,hiredate from emp) as boss</span><br><span class="line">right join</span><br><span class="line">(select mgr,ename,hiredate from emp) as worker</span><br><span class="line">on boss.empno=worker.mgr</span><br><span class="line">where boss.hiredate&gt;worker.hiredate</span><br></pre></td></tr></table></figure>
+
+<p>5． 列出部门名称和这些部门的员工信息，同时列出那些没有员工的部门。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from emp as t1</span><br><span class="line">left join dept as t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br></pre></td></tr></table></figure>
+
+<p>6． 列出所有“CLERK”（办事员）的姓名及其部门名称。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename,t2.deptname</span><br><span class="line">from</span><br><span class="line">(select ename,deptno from emp where job=‘CLERK’) as t1</span><br><span class="line">left join</span><br><span class="line">dept as t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br></pre></td></tr></table></figure>
+
+<p>7． 列出最低薪金大于1500的各种工作。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select job</span><br><span class="line">from</span><br><span class="line">(select job,min(sal) as min_sal from emp group by job) as t</span><br><span class="line">where min_sal &gt; 1500</span><br></pre></td></tr></table></figure>
+
+<p>8． 列出在部门“SALES”（销售部）工作的员工的姓名，假定不知道销售部的部门编号</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename</span><br><span class="line">from emp t1</span><br><span class="line">join</span><br><span class="line">dept t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br><span class="line">where t2.deptname=‘SALES’</span><br><span class="line"></span><br><span class="line">select t1.name</span><br><span class="line">from emp t1</span><br><span class="line">join</span><br><span class="line">(select deptno from dept where deptname=‘SALES’) t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br></pre></td></tr></table></figure>
+
+<p>9． 列出薪金高于公司平均薪金的所有员工。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename,t1.sal ,t2.avg_sal</span><br><span class="line">from</span><br><span class="line">(select ename,sal,1 as cid from emp) as t1</span><br><span class="line">join</span><br><span class="line">(select avg(sal) as avg_sal,1 as cid from emp) as t2</span><br><span class="line">on t1.cid=t2.cid</span><br><span class="line">where t1.sal&gt;t2.avg_sal</span><br></pre></td></tr></table></figure>
+
+<p>10．列出与“SCOTT”从事相同工作的所有员工。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename</span><br><span class="line">from</span><br><span class="line">(select ename,job,1 as cid from emp) as t1</span><br><span class="line">join</span><br><span class="line">(select job,1 as cid from emp where ename=‘SCOTT’) as t2</span><br><span class="line">on t1.cid=t2.cid</span><br><span class="line">where t1.job=t2.job and t1.ename!=‘SCOTT’</span><br></pre></td></tr></table></figure>
+
+<p>11．列出薪金 等于部门30中 员工的薪金 的所有员工的姓名和薪金。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename,t1.sal</span><br><span class="line">from emp as t1</span><br><span class="line">join</span><br><span class="line">(select distinct SAL from emp where DEPTNO = 30) t2</span><br><span class="line">on t1.sal=t2.sal</span><br><span class="line">where t1.deptno!=30</span><br></pre></td></tr></table></figure>
+
+<p>12．列出薪金高于在部门30工作的所有员工的薪金的员工姓名和薪金。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename,t1.sal</span><br><span class="line">from (select ename,sal,1 as cid from emp where deptno!=30) as t1</span><br><span class="line">left join</span><br><span class="line">(select max(sal) as max_sal,1 as cid from emp where deptno=30) as t2</span><br><span class="line">on t1.cid=t2.cid</span><br><span class="line">where t1.sal&gt;t2.max_sal</span><br></pre></td></tr></table></figure>
+
+<p>13．列出在每个部门工作的员工数量、平均工资和平均服务期限。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.deptno,t1.people,t2.avg_sal,t3.avg_time</span><br><span class="line">from</span><br><span class="line">(select count(*) as people,deptno from emp group by deptno) as t1</span><br><span class="line">left join</span><br><span class="line">(select round(avg(sal),2) as avg_sal,deptno from emp group by deptno) as t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br><span class="line">left join</span><br><span class="line">(select round(avg(datediff(current_date,hiredate)),2) as avg_time,deptno from emp group by deptno) as t3</span><br><span class="line">on t2.deptno=t3.deptno</span><br></pre></td></tr></table></figure>
+
+<p>14．列出所有员工的姓名、部门名称和工资。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select t1.ename,t2.deptname,t1.sal</span><br><span class="line">from emp as t1</span><br><span class="line">left join</span><br><span class="line">dept as t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br></pre></td></tr></table></figure>
+
+<p>15．列出所有部门的详细信息和部门人数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select *</span><br><span class="line">from</span><br><span class="line">(select * from dept) as t1</span><br><span class="line">left join</span><br><span class="line">(select deptno,count(*) from emp group by deptno) as t2</span><br><span class="line">on t1.deptno=t2.deptno</span><br></pre></td></tr></table></figure>
+
+<p>16．列出各种工作的最低工资。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select job,min(sal) from emp group by job</span><br></pre></td></tr></table></figure>
+
+<p>17．列出各个部门的MANAGER（经理）的最低薪金。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select deptno,ename,min(sal) from emp where job=‘MANAGER’ group by deptno,ename</span><br></pre></td></tr></table></figure>
+
+<p>18．列出所有员工的年工资,按年薪从低到高排序。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select ename,(sal+if(bonus is null,0,bonus))*12 as year_sal from emp</span><br><span class="line">order by year_sal</span><br></pre></td></tr></table></figure>
+
+<ol start="19">
+<li>列出每个部门薪水最高的前两名人员名称以及薪水。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select ename,sal</span><br><span class="line">from</span><br><span class="line">(select ename,sal,deptno,row_number() over(partition by deptno order by sal desc) as rk</span><br><span class="line">from emp) as t</span><br><span class="line">where rk&lt;=2</span><br></pre></td></tr></table></figure>
+
+<ol start="20">
+<li>列出每个员工从受雇开始到2018-12-12 为止共受雇了多少天。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select ename,datediff(‘2018-12-12’,hiredate) from emp</span><br></pre></td></tr></table></figure>
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/09/HBase%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/童年.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">HBase安装教程</div></div></a></div><div class="next-post pull-right"><a href="/2021/09/26/Hive%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%BB%93/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/全家福.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hive学习小结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/11/23/Flink/" title="Flink"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/小孩.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-23</div><div class="title">Flink</div></div></a></div><div><a href="/2021/10/22/Flume学习小结/" title="Flume学习小结"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/橘子.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-22</div><div class="title">Flume学习小结</div></div></a></div><div><a href="/2021/10/09/HBase安装教程/" title="HBase安装教程"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/童年.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-09</div><div class="title">HBase安装教程</div></div></a></div><div><a href="/2021/10/18/HBase的RowKeyy设计/" title="HBase的RowKey设计"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/窗户.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-18</div><div class="title">HBase的RowKey设计</div></div></a></div><div><a href="/2021/09/20/Hadoop学习/" title="Hadoop学习"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/初音未来.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-20</div><div class="title">Hadoop学习</div></div></a></div><div><a href="/2021/09/25/Hive环境搭建/" title="Hive环境搭建"><img class="cover" src="https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/樱花.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-25</div><div class="title">Hive环境搭建</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HiveSQL%E7%BB%83%E4%B9%A0%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">HiveSQL练习题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%8E%E7%AD%94%E6%A1%88"><span class="toc-number">1.1.</span> <span class="toc-text">题目与答案</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.jsdelivr.net/gh/Fang-gg/picture/img/列车.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By 酷酷的涛</div><div class="footer_custom_text">很高兴认识你！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="2919023249" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
